@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+set_time_limit(0);
+
+require_once __DIR__.'/../app/autoload.php';
+
+use Shopware\Components\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SHOPWARE_ENV'));
+
+$kernel = new AppKernel($env, false);
+$application = new Application($kernel);
+$application->run($input);
