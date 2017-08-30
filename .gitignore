@@ -1,13 +1,64 @@
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-/vendor/
-/web/cache/
-/web/media/
-/web/engine/
-/web/themes/
+composer.lock
+
 .env
+
+# PhpStorm-Project
+/.idea/
+
+# Composer
+/composer.phar
+/vendor/*
+
+# Themes
+/themes/*
+
+# User installed plugins
+/Plugins/Community/Backend/*
+/Plugins/Community/Core/*
+/Plugins/Community/Frontend/*
+/Plugins/Local/Backend/*
+/Plugins/Local/Core/*
+/Plugins/Local/Frontend/*
+
+/custom/plugins/*
+
+
+# Userconfigurations
+/config.php
+/config_*.php
+
+# Caches/Proxies.php_cs
+.php_cs.cache
+/tests/Shopware/TempFiles/*
+/var/cache/*
+!/var/cache/.htaccess
+!/var/cache/clear_cache.sh
+/web/cache/*
+
+# Log files
+/var/log/*
+!/var/log/.htaccess
+
+
+# User provided content
+/media/archive/*
+/media/image/*
+!/media/image/thumbnail
+/media/image/thumbnail/*
+/media/music/*
+/media/pdf/*
+/media/temp/*
+!/media/temp/.htaccess
+/media/unknown/*
+/media/video/*
+/media/vector/*
+
+/files/documents/*
+!/files/documents/.htaccess
+/files/downloads/*
+
+# Snippet exports
+/snippetsExport/
+
+!**/.gitkeep
+

@@ -1,12 +1,12 @@
 {
-    "name": "bcremer/shopware-composer-project",
+    "name": "shopware/shopware-composer",
     "description": "Project template for Shopware projects with composer",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "Benjamin Cremer",
-            "email": "bc@shopware.com"
+            "name": "Shopware",
+            "email": "info@shopware.com"
         }
     ],
     "autoload": {
@@ -16,15 +16,16 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/bcremer/shopware"
+            "url": "ssh://git@stash.shopware.com/sw/shopware.git"
         }
     ],
     "require": {
         "php": "^5.6.4||^7.0",
         "ext-apcu": "*",
-        "shopware/shopware": "dev-composer-project",
+        "shopware/shopware": "dev-sw-19269/5.4/composer-configurable-paths",
         "composer/installers": "^1.0",
-        "vlucas/phpdotenv": "~2.0"
+        "vlucas/phpdotenv": "~2.0",
+        "shyim/shopware-profiler": "^1.0"
     },
     "extra": {
         "installer-paths": {
@@ -39,9 +40,6 @@
     "scripts": {
         "post-root-package-install": [
             "php -r \"copy('.env.example', '.env');\""
-        ],
-        "post-install-cmd": [
-            "app/update.sh"
         ]
     }
 }

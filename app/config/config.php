@@ -2,6 +2,8 @@
 
 $db = array_merge(['port' => 3306], parse_url(getenv(getenv('DATABASE_URL_NAME') ?: 'DATABASE_URL')));
 
+$projectDir = dirname(__DIR__, 2);
+
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
     'db' => [
@@ -19,11 +21,33 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'showException' => true,
         'throwExceptions' => false,
     ),
+    'template' => [
+        'forceCompile' => true,
+        'templateDir' => $projectDir . '/themes',
+    ],
 
     'plugin_directories' => [
         'Default'   => $this->AppPath('Plugins_' . 'Default'),
-        'Local'     => PROJECTDIR . '/Plugins/Local/',
-        'Community' => PROJECTDIR . '/Plugins/Community/',
+        'Local'     => $projectDir . '/Plugins/Local/',
+        'Community' => $projectDir . '/Plugins/Community/',
+        'ShopwarePlugins' => $projectDir .'/custom/plugins/',
     ],
+    
+    'cdn' => [
+        'liveMigration' => true,
+        'adapters' => [
+            'local' => [
+                'path' => $projectDir,
+            ],
+        ],
+    ],
+    'app' => [
+        'rootDir' => $projectDir,
+        'downloadsDir' => $projectDir . '/files/downloads',
+        'documentsDir' => $projectDir . '/files/documents',
+    ],
+    'web' => [
+        'webDir' => $projectDir . '/web',
+        'cacheDir' => $projectDir . '/web/cache',
+    ]
 ]);
-
