@@ -7,14 +7,20 @@ RewriteEngine on
 #RewriteCond %{HTTPS} !=on
 #RewriteRule backend/(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+RewriteRule shopware.dll shopware.php
 RewriteRule files/documents/.* engine [NC,L]
 RewriteRule backend/media/(.*) media/$1 [NC,L]
+
+
+#RewriteCond %{REQUEST_URI} (\/(engine/Shopware/Plugins/)\/)
+#RewriteCond %{REQUEST_FILENAME} -f
+#RewriteRule ^/vendor/shopware/shopware/engine/Shopware/Plugins/(.*)$ /Plugins/$1 [PT,L,QSA]
 
 RewriteCond %{REQUEST_URI} !(\/(engine|files|templates|themes|web)\/)
 RewriteCond %{REQUEST_URI} !(\/media\/(archive|banner|image|music|pdf|unknown|video)\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [PT,L,QSA]
+RewriteRule ^(.*)$ shopware.php [PT,L,QSA]
 
 # Fix missing authorization-header on fast_cgi installations
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
@@ -103,6 +109,7 @@ DirectoryIndex shopware.php
    php_flag session.auto_start off
    php_flag suhosin.session.cryptua off
    php_flag zend.ze1_compatibility_mode off
+   php_value always_populate_raw_post_data -1
 </IfModule>
 
 #   AddType x-mapp-php5 .php

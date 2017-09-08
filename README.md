@@ -1,7 +1,5 @@
 # Composer template for Shopware projects
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
 ## Warning
 
 This is a proof of concept and not production ready.
