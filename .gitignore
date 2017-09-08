@@ -1,5 +1,6 @@
 composer.lock
 
+engine/*
 .env
 
 # PhpStorm-Project
@@ -10,7 +11,9 @@ composer.lock
 /vendor/*
 
 # Themes
-/themes/*
+/themes/Backend/ExtJs
+/themes/Frontend/Bare
+/themes/Frontend/Responsive
 
 # User installed plugins
 /Plugins/Community/Backend/*

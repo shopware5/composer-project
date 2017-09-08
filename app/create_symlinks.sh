@@ -24,27 +24,3 @@ mkdir -p themes/Backend
 ln -s ../../vendor/shopware/shopware/themes/Backend/ExtJs themes/Backend/ExtJs
 ln -s ../../vendor/shopware/shopware/themes/Frontend/Bare themes/Frontend/Bare
 ln -s ../../vendor/shopware/shopware/themes/Frontend/Responsive themes/Frontend/Responsive
-
-# Medien
-#if [ ! -d media ]; then
-#    cp -r vendor/shopware/shopware/media ./
-#fi
-#rm -rf vendor/shopware/shopware/media
-#ln -s ../../../media vendor/shopware/shopware/media
-
-# Files
-#if [ ! -d files ]; then
-#    cp -r vendor/shopware/shopware/files ./
-#fi
-#rm -rf vendor/shopware/shopware/files
-#ln -s ../../../files vendor/shopware/shopware/files
-
-# Web
-#if [ ! -d web ]; then
-#    cp -r vendor/shopware/shopware/web ./
-#fi
-#rm -rf vendor/shopware/shopware/web
-#ln -s ../../../web vendor/shopware/shopware/web
-
-#rm -rf Plugins/Default
-#ln -s ../vendor/shopware/shopware/engine/Shopware/Plugins/Default Plugins/Default
