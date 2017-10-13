@@ -3,8 +3,18 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
+declare no_symlinks='on'
+
+# Linux/Mac abstraction
+function get_realpath() {
+    [[ ! -f "$1" ]] && return 1 # failure : file does not exist.
+    [[ -n "$no_symlinks" ]] && local pwdp='pwd -P' || local pwdp='pwd' # do symlinks.
+    echo "$( cd "$( echo "${1%/*}" )" 2>/dev/null; $pwdp )"/"${1##*/}" # echo result.
+    return 0 # success
+}
+
 # Set magic variables for current FILE & DIR
-declare -r __FILE__=$(readlink -f ${BASH_SOURCE[0]})
+declare -r __FILE__=$(get_realpath ${BASH_SOURCE[0]})
 declare -r __DIR__=$(dirname $__FILE__)
 
 cd $__DIR__/..

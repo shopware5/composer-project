@@ -42,7 +42,6 @@ engine/*
 /var/log/*
 !/var/log/.htaccess
 
-
 # User provided content
 /media/archive/*
 /media/image/*
@@ -64,4 +63,4 @@ engine/*
 /snippetsExport/
 
 !**/.gitkeep
-
+.DS_Store

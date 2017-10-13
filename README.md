@@ -1,13 +1,9 @@
 # Composer template for Shopware projects
 
-## Warning
-
-This is a proof of concept and not production ready.
-
 ## Installation
 
 ```
-composer create-project bcremer/shopware-composer-project my_project_name --no-interaction --stability=dev
+composer create-project shopware/shopware-composer-project my_project_name --no-interaction --stability=dev
 ```
 
 During installation `.env.example` is copied to `.env`.

@@ -17,10 +17,6 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'display_errors' => 1
     ],
 
-    'front' => array(
-        'showException' => true,
-        'throwExceptions' => false,
-    ),
     'template' => [
         'forceCompile' => true,
         'templateDir' => $projectDir . '/themes',
@@ -49,5 +45,41 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
     'web' => [
         'webDir' => $projectDir . '/web',
         'cacheDir' => $projectDir . '/web/cache',
-    ]
+    ],
+
+    'csrfProtection' => [
+        'frontend' => false,
+        'backend' => false,
+    ],
+
+    'front' => [
+        'showException' => true,
+        'throwExceptions' => true,
+        'noErrorHandler' => false,
+    ],
+
+    //Zeige Low-Level PHP-Fehler
+    'phpsettings' => [
+        'display_errors' => 1,
+    ],
+
+    // Backend-Cache
+    'cache' => [
+        'backend' => 'Black-Hole',
+        'backendOptions' => [],
+        'frontendOptions' => [
+            'write_control' => false,
+        ],
+    ],
+
+    // Model-Cache
+    'model' => [
+        'cacheProvider' => 'Array' // supports Apc, Array, Wincache and Xcache
+    ],
+
+    // Http-Cache
+    'httpcache' => [
+        'enabled' => true, // true or false
+        'debug' => true,
+    ],
 ]);

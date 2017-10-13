@@ -10,7 +10,6 @@
         }
     ],
     "autoload": {
-        "psr-4": { "": "src/" },
         "classmap": [ "app/AppKernel.php" ]
     },
     "repositories": [
@@ -21,7 +20,6 @@
     ],
     "require": {
         "php": "^5.6.4||^7.0",
-        "ext-apcu": "*",
         "shopware/shopware": "dev-sw-19269/5.4/composer-configurable-paths",
         "composer/installers": "^1.0",
         "vlucas/phpdotenv": "~2.0",
