@@ -32,6 +32,9 @@
             "Plugins/Local/Frontend/{$name}/": ["type:shopware-frontend-plugin"]
         }
     },
+    "include-path": [
+        "engine/Library/"
+    ],
     "config": {
          "optimize-autoloader": true
     },
