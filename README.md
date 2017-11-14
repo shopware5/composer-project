@@ -2,7 +2,7 @@
 
 ## Installation
 
-```
+```bash
 composer create-project shopware/shopware-composer-project my_project_name --no-interaction --stability=dev
 ```
 
@@ -20,14 +20,14 @@ Run composer update shopware/shopware.
 
 ## Plugins
 
-Plugins are gettings installed into `Plugins/`.
+Legacy Shopware plugins are getting installed into `Plugins/`, new plugins into `custom/plugins/`.
 
 ### Prepare plugins for composer installation
 
 Given you have a plugin called `SwagMediaSftp` (`Shopware_Plugins_Frontend_SwagMediaSftp_Bootstrap`) add your dependencies in your plugins `composer.json` file.
 Also set the `type` to `shopware-frontend-plugin`.
 
-```
+```json
 {
     "name": "shopwarelabs/swag-media-sftp",
     "type": "shopware-frontend-plugin",

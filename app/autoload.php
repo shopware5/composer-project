@@ -1,8 +1,8 @@
 <?php
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Composer\Autoload\ClassLoader;
 use Dotenv\Dotenv;
+use Composer\Autoload\ClassLoader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**
  * @var ClassLoader $loader
