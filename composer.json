@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^5.6.4||^7.0",
-        "shopware/shopware": "dev-sw-19269/5.4/composer-configurable-paths",
+        "shopware/shopware": "dev-sw-19878/5.4/project-plugin-path",
         "composer/installers": "^1.0",
         "vlucas/phpdotenv": "~2.0",
         "shyim/shopware-profiler": "^1.0"
@@ -36,11 +36,18 @@
         "engine/Library/"
     ],
     "config": {
-         "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "process-timeout": 0
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\""
+           "./app/post-install.sh"
+        ],
+        "post-install-cmd": [
+           "./app/post-install.sh"
+        ],
+        "post-update-cmd":[
+           "./app/post-update.sh"
         ]
     }
 }
