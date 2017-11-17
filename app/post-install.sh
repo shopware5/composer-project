@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
-declare -r dir=$(dirname $0)
-declare -r file="install.sh"
+source $(dirname "$0")/functions.sh
 
-cat $dir/banner.txt
+if envFileDoesNotExists
+    then
+        echo -e "\nPlease run ${__DIR__}/${__FILE__} manually to finish your installation"
+    else
+        ${__DIR__}/post-update.sh
+        exit 0
+    fi
 
-echo -e "\nPlease run $dir/$file manually to finish your installation"
-
+banner
 echo -e "Have a nice day!\n"
