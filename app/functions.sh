@@ -17,30 +17,29 @@ function get_realpath() {
 declare -r __FILE__=$(get_realpath ${BASH_SOURCE[0]})
 declare -r __DIR__=$(dirname $__FILE__)
 
-
 function printError(){
-   >&2 echo -e "$@"
+    >&2 echo -e "$@"
 }
 
 function promptYesOrNo(){
-   declare prompt="$1"
-   declare default=${2:-""}
+    declare prompt="$1"
+    declare default=${2:-""}
 
-   while true
-	   do
-         read -p "$prompt" answer
-			case $(echo "$answer" | `which awk` '{print tolower($0)}') in
-            y|yes) echo 'y'; break;;
-            n|no) echo 'n'; break;;
-            *) 
-               if [ ! -z "$default" ]
-                  then
-                     echo "$default"
-                     break
-               fi
-               printError "Please enter y or n ...";;
-         esac
-		done
+    while true
+        do
+            read -p "$prompt" answer
+                case $(echo "$answer" | `which awk` '{print tolower($0)}') in
+                    y|yes) echo 'y'; break;;
+                    n|no) echo 'n'; break;;
+                    *)
+                        if [ ! -z "$default" ]
+                            then
+                                echo "$default"
+                                break
+                        fi
+                        printError "Please enter y or n ...";;
+        esac
+    done
 }
 
 function swCommand(){
@@ -59,7 +58,7 @@ function envFileDoesNotExists(){
 function createEnvFile(){
 
     echo -e "\n--------------------------"
-	 echo -e "Database settings"
+    echo -e "Database settings"
     echo -e "--------------------------\n"
 
     read -p "Enter your database host (default: 127.0.0.1): " DB_HOST
@@ -78,7 +77,7 @@ function createEnvFile(){
     DB_PORT=${DB_PORT:-"3306"}
 
     echo -e "\n--------------------------"
-	 echo -e "Admin settings"
+    echo -e "Admin settings"
     echo -e "--------------------------\n"
 
     read -p "Admin username (default: demo): " ADMIN_USERNAME
@@ -94,7 +93,7 @@ function createEnvFile(){
     ADMIN_EMAIL=${ADMIN_EMAIL:-"demo@demo.com"}
 
     echo -e "\n--------------------------"
-	 echo -e "Shop settings"
+    echo -e "Shop settings"
     echo -e "--------------------------\n"
 
     read -p "Enter your shop URL incl. protocol and path (default: http://shopware.example/path): " SHOP_URL

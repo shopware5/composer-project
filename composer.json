@@ -20,8 +20,8 @@
     ],
     "require": {
         "php": "^5.6.4||^7.0",
-        "shopware/shopware": "dev-sw-19878/5.4/project-plugin-path",
         "composer/installers": "^1.0",
+        "shopware/shopware": "dev-ntr/5.4/merge-5.3-in-5.4",
         "vlucas/phpdotenv": "~2.0",
         "shyim/shopware-profiler": "^1.0"
     },
