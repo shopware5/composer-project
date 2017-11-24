@@ -12,16 +12,10 @@
     "autoload": {
         "classmap": [ "app/AppKernel.php" ]
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "ssh://git@stash.shopware.com/sw/shopware.git"
-        }
-    ],
     "require": {
         "php": "^5.6.4||^7.0",
         "composer/installers": "^1.0",
-        "shopware/shopware": "dev-ntr/5.4/merge-5.3-in-5.4",
+        "shopware/shopware": "5.4.x-dev",
         "vlucas/phpdotenv": "~2.0",
         "shyim/shopware-profiler": "^1.0"
     },
