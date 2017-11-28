@@ -25,9 +25,6 @@
             "Plugins/Local/Frontend/{$name}/": ["type:shopware-frontend-plugin"]
         }
     },
-    "suggest": {
-        "shyim/shopware-profiler": "^1.0"
-    },
     "include-path": [
         "engine/Library/"
     ],
