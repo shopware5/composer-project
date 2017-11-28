@@ -12,7 +12,6 @@ fi
 
 loadEnvFile
 
-swCommand sw:cache:clear
 swCommand sw:database:setup --steps=drop,create,import
 
 if [ $IMPORT_DEMODATA = y ] ; then
