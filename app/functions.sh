@@ -47,7 +47,9 @@ function swCommand(){
 }
 
 function banner(){
-    cat ${__DIR__}/banner.txt
+    echo -e -n $'\e[34m\e[1'
+    echo -e | cat ${__DIR__}/banner.txt
+    echo -e $'\e[0m'
 }
 
 function envFileDoesNotExists(){
@@ -117,7 +119,7 @@ function createEnvFile(){
 
 function loadEnvFile(){
     if [ -f $__DIR__/../.env ]; then
-        echo "Loading configuration settings from .env file"
+        echo -e "\033[1;34mLoading configuration settings from .env file\033[0m"
         source $__DIR__/../.env
         return
     fi

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 source $(dirname "$0")/functions.sh
-
 banner
 
 if envFileDoesNotExists
@@ -11,6 +10,13 @@ if envFileDoesNotExists
 fi
 
 loadEnvFile
+
+BC=$'\e[41m\e[97m'
+EC=$'\e[0m'
+read -p "Start installation? This will drop the database ${BC}$DATABASE_URL${EC}! (y/N) " DROP_DATABASE
+
+DROP_DATABASE=${DROP_DATABASE:-"n"}
+[ $DROP_DATABASE = n ] && exit 1;
 
 swCommand sw:database:setup --steps=drop,create,import
 
