@@ -8,7 +8,7 @@ if envFileDoesNotExists
    then
       echo -e "\nHi there! We need to configure your shop before proceeding any further, please complete the following fields\n"
       createEnvFileInteractive
-	fi
+fi
 
 loadEnvFile
 
@@ -28,6 +28,5 @@ swCommand sw:theme:initialize
 swCommand sw:firstrunwizard:disable
 swCommand sw:admin:create --name="$ADMIN_NAME" --email="$ADMIN_EMAIL" --username="$ADMIN_USERNAME" --password="$ADMIN_PASSWORD" -n
 
-[ $IMPORT_DEMODATA = y ] && echo -e "\nIMPORTANT: To install the demo data images please download and unzip: http://releases.s3.shopware.com/test_images_since_5.1.zip\n";
-echo "Installation finished, have fun!"
-
+echo -e "Installation finished, have fun!\n"
+[ $IMPORT_DEMODATA = y ] && echo -e "To install the demodata images (~285MB), run:\ncurl -L http://releases.s3.shopware.com/test_images_since_5.1.zip > images.zip && unzip images.zip && rm images.zip\n";
