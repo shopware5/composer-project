@@ -13,22 +13,27 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'host'     => $db['host'],
     ],
 
-    'phpSettings' => [
-        'display_errors' => 1
-    ],
-
     'template' => [
-        'forceCompile' => true,
         'templateDir' => $projectDir . '/themes',
     ],
 
     'plugin_directories' => [
+        /*
+         * Only use "composer require some/path" to install plugins into the standard Shopware plugin directories.
+         * These directories are all .gitignored to prevent the installed plugins from being added to the VCS.
+         */
         'Default'   => $this->AppPath('Plugins_' . 'Default'),
         'Local'     => $projectDir . '/Plugins/Local/',
         'Community' => $projectDir . '/Plugins/Community/',
         'ShopwarePlugins' => $projectDir .'/custom/plugins/',
+
+        /**
+         * Put custom, project specific plugins or plugins bought from the Shopware store to this directory.
+         * They will be added to GIT so you can deploy them with your project.
+         */
+        'ProjectPlugins' => $projectDir .'/custom/project/',
     ],
-    
+
     'cdn' => [
         'liveMigration' => true,
         'adapters' => [

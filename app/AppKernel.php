@@ -33,6 +33,11 @@ class AppKernel extends Kernel
         return dirname(__DIR__).'/var/log';
     }
 
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @throws Exception
+     */
     protected function prepareContainer(ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__));
