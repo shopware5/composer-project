@@ -21,7 +21,7 @@ DROP_DATABASE=${DROP_DATABASE:-"n"}
 swCommand sw:database:setup --steps=drop,create,import
 
 if [ $IMPORT_DEMODATA = y ] ; then
-   echo "Importing demo data please wait ..."
+   echo "Importing demo data please wait..."
    swCommand sw:database:setup --steps=importDemodata
 fi
 

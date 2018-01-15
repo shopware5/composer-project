@@ -23,7 +23,6 @@ engine/*
 
 /custom/plugins/*
 
-
 # Userconfigurations
 /config.php
 /config_*.php

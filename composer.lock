@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "29206f0c8f11e0b734dadab3c8b2eee3",
+    "content-hash": "f63bb9546a14dab1b18e8f97aa8cb7b7",
     "packages": [
         {
             "name": "bcremer/line-reader",
