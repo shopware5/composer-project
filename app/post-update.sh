@@ -6,7 +6,7 @@ banner
 
 loadEnvFile
 
-echo "Updating Shopware install, please wait ...."
+echo "Updating Shopware install, please wait..."
 
 swCommand sw:migrations:migrate --mode=update
 swCommand sw:cache:clear
