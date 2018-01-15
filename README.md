@@ -14,7 +14,7 @@ This will clone the repository with all necessary dependencies into a new direct
 You can then either provide a `.env` file for defining database credentials, the shop-url and Shopware version or have
 one created for you using an interactive installer. 
 
-To use the installer, simply run 
+To use the installer, simply run: 
 
 ```bash
 $ ./app/install.sh
