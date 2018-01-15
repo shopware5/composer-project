@@ -33,5 +33,11 @@ swCommand sw:theme:initialize
 swCommand sw:firstrunwizard:disable
 swCommand sw:admin:create --name="$ADMIN_NAME" --email="$ADMIN_EMAIL" --username="$ADMIN_USERNAME" --password="$ADMIN_PASSWORD" -n
 
-echo -e "Installation finished, have fun!\n"
-[ $IMPORT_DEMODATA = y ] && echo -e "To install the demodata images (~285MB), run:\ncurl -L http://releases.s3.shopware.com/test_images_since_5.1.zip > images.zip && unzip images.zip && rm images.zip\n";
+if [ $IMPORT_DEMODATA = y ] ; then
+    read -p "Do you want to install the images (~285MB) for the installed demo data? cURL is required. (Y/n) " INSTALL_IMAGES
+    INSTALL_IMAGES=${INSTALL_IMAGES:-"y"}
+
+    [ $INSTALL_IMAGES = y ] && `which curl` -L "http://releases.s3.shopware.com/test_images_since_5.1.zip" > images.zip && unzip images.zip && rm images.zip
+fi
+
+echo -e "\nInstallation finished, have fun!\n"
