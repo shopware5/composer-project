@@ -1846,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/shopware/shopware.git",
-                "reference": "ea4b91487ca377c66d830fe27af5225804df9263"
+                "reference": "8b69e0dae53e9f748e0360acf35afbef23fa9f56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shopware/shopware/zipball/ea4b91487ca377c66d830fe27af5225804df9263",
-                "reference": "ea4b91487ca377c66d830fe27af5225804df9263",
+                "url": "https://api.github.com/repos/shopware/shopware/zipball/8b69e0dae53e9f748e0360acf35afbef23fa9f56",
+                "reference": "8b69e0dae53e9f748e0360acf35afbef23fa9f56",
                 "shasum": ""
             },
             "require": {
@@ -1958,7 +1958,7 @@
                 "shop",
                 "shopware"
             ],
-            "time": "2018-01-11T13:13:34+00:00"
+            "time": "2018-01-17T14:57:16+00:00"
         },
         {
             "name": "symfony/class-loader",
