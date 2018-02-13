@@ -33,6 +33,7 @@ swCommand sw:database:setup --steps=setupShop --shop-url="$SHOP_URL"
 swCommand sw:snippets:to:db --include-plugins
 swCommand sw:theme:initialize
 swCommand sw:firstrunwizard:disable
+swCommand sw:plugin:deactivate SwagUpdate
 swCommand sw:admin:create --name="$ADMIN_NAME" --email="$ADMIN_EMAIL" --username="$ADMIN_USERNAME" --password="$ADMIN_PASSWORD" -n
 
 if [ $IMPORT_DEMODATA = y ]; then
