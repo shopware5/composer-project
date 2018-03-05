@@ -2,7 +2,7 @@
 
 $db = array_merge(['port' => 3306], parse_url(getenv('DATABASE_URL')));
 
-$projectDir = dirname(__DIR__, 2);
+$projectDir = dirname(dirname(__DIR__));
 
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
