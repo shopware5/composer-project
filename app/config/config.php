@@ -2,7 +2,7 @@
 
 $db = array_merge(['port' => 3306], parse_url(getenv('DATABASE_URL')));
 
-$projectDir = dirname(dirname(__DIR__));
+$projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
@@ -14,7 +14,7 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
     ],
 
     'template' => [
-        'templateDir' => $projectDir . '/themes',
+        'templateDir' => $projectDir . 'themes',
     ],
 
     'plugin_directories' => [
@@ -23,15 +23,15 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
          * These directories are all .gitignored to prevent the installed plugins from being added to the VCS.
          */
         'Default'   => $this->AppPath('Plugins_' . 'Default'),
-        'Local'     => $projectDir . '/Plugins/Local/',
-        'Community' => $projectDir . '/Plugins/Community/',
-        'ShopwarePlugins' => $projectDir .'/custom/plugins/',
+        'Local'     => $projectDir . 'Plugins/Local/',
+        'Community' => $projectDir . 'Plugins/Community/',
+        'ShopwarePlugins' => $projectDir .'custom/plugins/',
 
         /**
          * Put custom, project specific plugins or plugins bought from the Shopware store to this directory.
          * They will be added to GIT so you can deploy them with your project.
          */
-        'ProjectPlugins' => $projectDir .'/custom/project/',
+        'ProjectPlugins' => $projectDir . 'custom/project/',
     ],
 
     'cdn' => [
@@ -45,12 +45,12 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
 
     'app' => [
         'rootDir' => $projectDir,
-        'downloadsDir' => $projectDir . '/files/downloads',
-        'documentsDir' => $projectDir . '/files/documents',
+        'downloadsDir' => $projectDir . 'files/downloads',
+        'documentsDir' => $projectDir . 'files/documents',
     ],
 
     'web' => [
-        'webDir' => $projectDir . '/web',
-        'cacheDir' => $projectDir . '/web/cache',
+        'webDir' => $projectDir . 'web',
+        'cacheDir' => $projectDir . 'web/cache',
     ],
 ]);

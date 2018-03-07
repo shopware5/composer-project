@@ -12,7 +12,7 @@ class AppKernel extends Kernel
      */
     protected function getConfigPath()
     {
-        return __DIR__.'/config/config.php';
+        return __DIR__ . '/config/config.php';
     }
 
     /**
@@ -20,7 +20,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+        return dirname(__DIR__) . '/var/cache/' . $this->getEnvironment();
     }
 
     /**
@@ -30,7 +30,7 @@ class AppKernel extends Kernel
      */
     public function getLogDir()
     {
-        return dirname(__DIR__).'/var/log';
+        return dirname(__DIR__) . '/var/log';
     }
 
     /**
@@ -61,9 +61,9 @@ class AppKernel extends Kernel
          * It should match the version being installed by composer. This way plugins still are able to check
          * for the Shopware version.
          */
-        $this->release['version'] = getenv('SHOPWARE_VERSION') ?: self::VERSION;
-        $this->release['version_text'] = getenv('SHOPWARE_VERSION_TEXT') ?: self::VERSION_TEXT;
-        $this->release['revision'] = getenv('SHOPWARE_REVISION') ?: self::REVISION;
+        $this->release['version'] = getenv('SHOPWARE_VERSION') === false ? self::VERSION : getenv('SHOPWARE_VERSION');
+        $this->release['version_text'] = getenv('SHOPWARE_VERSION_TEXT') === false ? self::VERSION_TEXT : getenv('SHOPWARE_VERSION_TEXT');
+        $this->release['revision'] = getenv('SHOPWARE_REVISION') === false ? self::REVISION : getenv('SHOPWARE_REVISION');
 
         parent::__construct($environment, $debug);
     }
