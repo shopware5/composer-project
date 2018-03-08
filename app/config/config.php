@@ -28,7 +28,7 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'ShopwarePlugins' => $projectDir .'custom/plugins/',
 
         /**
-         * Put custom, project specific plugins or plugins bought from the Shopware store to this directory.
+         * Put custom, project specific plugins or plugins bought from the Shopware store FOR THIS SHOP to this directory.
          * They will be added to GIT so you can deploy them with your project.
          */
         'ProjectPlugins' => $projectDir . 'custom/project/',
