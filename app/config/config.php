@@ -1,6 +1,16 @@
 <?php
 
-$db = array_merge(['port' => 3306], parse_url(getenv('DATABASE_URL')));
+$db = parse_url(getenv('DATABASE_URL'));
+
+// Fallback if e.g. the password contains URL invalid parameters
+if (!$db) {
+    $db['user'] = getenv('DB_USERNAME');
+    $db['pass'] = getenv('DB_PASSWORD');
+    $db['path'] = '/' . getenv('DB_DATABASE');
+    $db['host'] = getenv('DB_HOST');
+    $db['port'] = getenv('DB_PORT');
+    $db['scheme'] = 'mysql';
+}
 
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
