@@ -22,6 +22,15 @@ function get_realpath(){
 declare -r __FILE__=$(get_realpath ${BASH_SOURCE[0]})
 declare -r __DIR__=$(dirname $__FILE__)
 
+# Coloring/Styling helpers
+esc=$(printf '\033')
+reset="${esc}[0m"
+blue="${esc}[34m"
+green="${esc}[32m"
+red="${esc}[31m"
+bold="${esc}[1m"
+warn="${esc}[41m${esc}[97m"
+
 function printError(){
     >&2 echo -e "$@"
 }
@@ -58,9 +67,9 @@ function swCommand(){
 }
 
 function banner(){
-    echo -e -n $'\e[34m\e[1'
-    echo -e | cat ${__DIR__}/banner.txt
-    echo -e $'\e[0m'
+    echo -n "${blue}"
+    cat ${__DIR__}/banner.txt
+    echo "${reset}"
 }
 
 function envFileDoesNotExists(){
@@ -142,7 +151,7 @@ function createEnvFile(){
 
 function loadEnvFile(){
     if [ -f $__DIR__/../.env ]; then
-        echo -e "\033[1;34mLoading configuration settings from .env file\033[0m"
+        echo "${green}Loading configuration settings from .env file${reset}"
         source $__DIR__/../.env
         return
     fi
