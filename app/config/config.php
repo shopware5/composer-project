@@ -1,6 +1,9 @@
 <?php
 
-$db = parse_url(getenv('DATABASE_URL'));
+$db = false;
+if (getenv('DATABASE_URL')) {
+    $db = parse_url(getenv('DATABASE_URL'));
+}
 
 // Fallback if e.g. the password contains URL invalid parameters
 if (!$db) {
