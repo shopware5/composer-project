@@ -58,9 +58,9 @@ function swCommand(){
 }
 
 function banner(){
-    echo -e -n $'\e[34m'
-    echo -e | cat ${__DIR__}/banner.txt
-    echo -e $'\e[0m'
+    echo -e -n '\e[34m'
+    cat ${__DIR__}/banner.txt
+    echo -e '\e[0m'
 }
 
 function envFileDoesNotExists(){
