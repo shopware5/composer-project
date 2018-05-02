@@ -151,7 +151,7 @@ function createEnvFile(){
 
 function loadEnvFile(){
     if [ -f $__DIR__/../.env ]; then
-        echo "${blue}${bold}Loading configuration settings from .env file${reset}"
+        echo "${green}Loading configuration settings from .env file${reset}"
         source $__DIR__/../.env
         return
     fi
