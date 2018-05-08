@@ -17,7 +17,7 @@ if (!$db) {
 
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
-return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
+$config = array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
     'db' => [
         'username' => $db['user'],
@@ -67,3 +67,11 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'cacheDir' => $projectDir . 'web/cache',
     ],
 ]);
+
+if (file_exists($projectDir . 'config.php')) {
+
+    $config = array_replace_recursive($config, $this->loadConfig($projectDir . 'config.php'));
+
+}
+
+return $config;
