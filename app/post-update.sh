@@ -13,6 +13,7 @@ createSymLinks
 swCommand sw:migrations:migrate --mode=update
 swCommand sw:cache:clear
 swCommand sw:theme:cache:generate
+swCommand sw:plugin:refresh
 swCommand sw:plugin:update --batch=active
 
 echo -e "\n\nDone!\n"
