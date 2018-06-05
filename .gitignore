@@ -1,5 +1,7 @@
 engine/*
 .env
+.env.*
+!.env.example
 
 # PhpStorm-Project
 /.idea/
