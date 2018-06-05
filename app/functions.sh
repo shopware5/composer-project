@@ -58,7 +58,7 @@ function swCommand(){
 }
 
 function banner(){
-    echo -e -n $'\e[34m\e[1'
+    echo -e -n $'\e[34m\e[1m'
     echo -e | cat ${__DIR__}/banner.txt
     echo -e $'\e[0m'
 }
