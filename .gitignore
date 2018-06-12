@@ -8,6 +8,9 @@ engine/*
 /composer.phar
 /vendor/*
 
+# PHPUnit
+/tests
+
 # Themes
 /themes/Backend/ExtJs
 /themes/Frontend/Bare
