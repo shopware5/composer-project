@@ -16,6 +16,7 @@ if (!$db) {
 }
 
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
+$debug = $this->Environment() !== 'production';
 
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
@@ -65,5 +66,14 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
     'web' => [
         'webDir' => $projectDir . 'web',
         'cacheDir' => $projectDir . 'web/cache',
+    ],
+    
+    'front' => [
+        'showException' => $debug,
+        'throwExceptions' => $debug,
+    ],
+    
+    'phpsettings' => [
+        'display_errors' => (int) $debug,
     ],
 ]);
