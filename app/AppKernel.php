@@ -56,14 +56,26 @@ class AppKernel extends Kernel
     {
         /**
          * Setting the environment variables, either directly, by the webserver or using the .env-file
-         * allows you to define a custom Shopware version.
+         * allows you to define a custom Shopware version IF NECESSARY.
          *
          * It should match the version being installed by composer. This way plugins still are able to check
          * for the Shopware version.
+         *
+         * YOU SHOULDN'T NORMALLY HAVE TO DO THIS! (See below)
          */
         $this->release['version'] = getenv('SHOPWARE_VERSION') === false ? self::VERSION : getenv('SHOPWARE_VERSION');
-        $this->release['version_text'] = getenv('SHOPWARE_VERSION_TEXT') === false ? self::VERSION_TEXT : getenv('SHOPWARE_VERSION_TEXT');
         $this->release['revision'] = getenv('SHOPWARE_REVISION') === false ? self::REVISION : getenv('SHOPWARE_REVISION');
+        $this->release['version_text'] = getenv('SHOPWARE_VERSION_TEXT') === false ? self::VERSION_TEXT : getenv('SHOPWARE_VERSION_TEXT');
+
+        /**
+         * We try to determine the installed version of Shopware automatically.
+         */
+        try {
+            list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
+            $this->release['version'] = $version;
+            $this->release['revision'] = $sha;
+        } catch (\OutOfBoundsException $ex) {
+        }
 
         parent::__construct($environment, $debug);
     }
