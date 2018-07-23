@@ -16,6 +16,7 @@
         "php": "^5.6.4||^7.0",
         "composer/installers": "^1.0",
         "shopware/shopware": "^5.4",
+        "ocramius/package-versions": "1.2.0",
         "vlucas/phpdotenv": "~2.0"
     },
     "extra": {
@@ -30,10 +31,7 @@
     ],
     "config": {
         "optimize-autoloader": true,
-        "process-timeout": 0,
-        "platform": {
-            "php": "5.6.4"
-        }
+        "process-timeout": 0
     },
     "scripts": {
         "post-root-package-install": [
