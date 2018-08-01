@@ -58,6 +58,15 @@ class AppKernel extends Kernel
         return parent::prepareContainer($container);
     }
 
+    /**
+     * Creates a new instance of the Shopware application
+     */
+    protected function initializeShopware()
+    {
+        $this->shopware = new \AppShopware($this->container);
+        $this->container->setApplication($this->shopware);
+    }
+
     private function loadRelease()
     {
         $this->loadReleaseFromEnv();

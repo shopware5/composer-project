@@ -10,7 +10,10 @@
         }
     ],
     "autoload": {
-        "classmap": [ "app/AppKernel.php" ]
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppShopware.php"
+        ]
     },
     "require": {
         "php": "^7.0",
