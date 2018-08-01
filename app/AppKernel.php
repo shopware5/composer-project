@@ -72,7 +72,7 @@ class AppKernel extends Kernel
          */
         try {
             list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
-            $this->release['version'] = $version;
+            $this->release['version'] = preg_replace('/[^0-9.]/', '', $version);
             $this->release['revision'] = $sha;
         } catch (\OutOfBoundsException $ex) {
         }
