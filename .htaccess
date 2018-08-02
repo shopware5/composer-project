@@ -47,7 +47,7 @@ DirectoryIndex index.php
 DirectoryIndex shopware.php
 
 # Disables download of configuration
-<Files ~ "\.(tpl|yml|ini)$">
+<Files ~ "\.(tpl|yml|ini|env|env.*)$">
     # Deny all requests from Apache 2.4+.
     <IfModule mod_authz_core.c>
           Require all denied
