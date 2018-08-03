@@ -13,7 +13,7 @@
         "classmap": [ "app/AppKernel.php" ]
     },
     "require": {
-        "php": "^5.6.4||^7.0",
+        "php": "^7.0",
         "composer/installers": "^1.0",
         "shopware/shopware": "^5.4",
         "ocramius/package-versions": "1.2.0",
