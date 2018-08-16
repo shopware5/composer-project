@@ -20,6 +20,16 @@ To use the installer, simply run:
 $ ./app/install.sh
 ```
 
+## Configuration
+
+Configuration settings like environment specific database settings, API tokens, server IPs or any type of credentials
+should be set via environment variables. That way you don't have to include any environment specific or sensitive 
+information in your project. You can use a `.env` file for local development or as a workaround.
+
+You can also configure some generic project services in `app/services.xml`. For instance, the error log is configured to
+use `stderr` output instead of default log file located at `var/log` directory. New and additional services should be
+provided using plugins, though.
+
 ## Updating Shopware
 
 Update the version number of `shopware/shopware` in `composer.json`. Then run `composer update shopware/shopware`
