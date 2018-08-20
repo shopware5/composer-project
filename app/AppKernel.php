@@ -85,11 +85,29 @@ class AppKernel extends Kernel
      */
     private function loadReleaseFromComposer()
     {
+        // If something was defined in the ENV, we respect that setting
+        if ($this->release['version'] !== self::VERSION) {
+            return;
+        }
+
         try {
             list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
-            $this->release['version'] = preg_replace('/[^0-9.]/', '', $version);
-            $this->release['revision'] = $sha;
+
+            /*
+             * Make sure the version matches some expected patterns like "5.4.0" or "5.0.0-RC1"
+             */
+            if (!preg_match('/^([\d]+\.[\d]+\.[\d]+(\-[a-zA-Z\d]{0,4})?)$/', $version)) {
+                throw new OutOfBoundsException(sprintf('Version "%s" not in expected format', $version));
+            }
+
+            $this->release['version'] = $version;
+            $this->release['revision'] = substr($sha, 0, 10);
+            $this->release['version_text'] = ''; // Feel free to change this
         } catch (\OutOfBoundsException $ex) {
+            // Silent catch
+            $this->release['version'] = 'unknown';
+            $this->release['revision'] = 'unknown';
+            $this->release['version_text'] = '';
         }
     }
 }
