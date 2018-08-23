@@ -94,6 +94,11 @@ class AppKernel extends Kernel
             list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
 
             /*
+             * Trim leading v from versions like "v5.4.6"
+             */
+            $version = preg_replace('/^[v]/','',$version);
+
+            /*
              * Make sure the version matches some expected patterns like "5.4.0" or "5.0.0-RC1"
              */
             if (!preg_match('/^([\d]+\.[\d]+\.[\d]+(\-[a-zA-Z\d]{0,4})?)$/', $version)) {
