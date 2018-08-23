@@ -96,7 +96,7 @@ class AppKernel extends Kernel
             /*
              * Trim leading v from versions like "v5.4.6"
              */
-            $version = preg_replace('/^[v]/','',$version);
+            $version = ltrim(strtolower($version), 'v');
 
             /*
              * Make sure the version matches some expected patterns like "5.4.0" or "5.0.0-RC1"
