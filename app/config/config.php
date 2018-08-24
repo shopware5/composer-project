@@ -17,6 +17,14 @@ if (!$db) {
 
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
+if (file_exists($projectDir . 'config_' . $this->Environment() . '.php')) {
+    $customConfig = $this->loadConfig($projectDir . 'config_' . $this->Environment() . '.php');
+} elseif (file_exists($projectDir . 'config.php')) {
+    $customConfig = $this->loadConfig($projectDir . 'config.php');
+} else {
+    $customConfig = [];
+}
+
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
     'db' => [
