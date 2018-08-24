@@ -74,4 +74,4 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'webDir' => $projectDir . 'web',
         'cacheDir' => $projectDir . 'web/cache',
     ],
-]);
+], $customConfig);
