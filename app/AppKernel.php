@@ -32,7 +32,7 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return dirname(__DIR__) . '/var/cache/' . $this->getEnvironment();
+        return dirname(__DIR__) . '/var/cache/' . $this->getEnvironment() . '_' . $this->release['revision'];
     }
 
     /**
