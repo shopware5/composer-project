@@ -1,5 +1,6 @@
 <?php
 
+use PackageVersions\Versions;
 use Shopware\Kernel;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -91,23 +92,15 @@ class AppKernel extends Kernel
         }
 
         try {
-            list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
+            $version = Versions::getVersion('shopware/shopware');
 
-            /*
-             * Trim leading v from versions like "v5.4.6"
-             */
-            $version = ltrim(strtolower($version), 'v');
-
-            /*
-             * Make sure the version matches some expected patterns like "5.4.0" or "5.0.0-RC1"
-             */
-            if (!preg_match('/^([\d]+\.[\d]+\.[\d]+(\-[a-zA-Z\d]{0,4})?)$/', $version)) {
+            if (!preg_match('/^v?(?<plainVersion>[\d]+\.[\d]+\.[\d]+)(\-(?<stability>[a-z\d]{0,4}))?(@(?<hash>[a-z\d]+)?)?$/i', $version, $versionMatches)) {
                 throw new OutOfBoundsException(sprintf('Version "%s" not in expected format', $version));
             }
 
-            $this->release['version'] = $version;
-            $this->release['revision'] = substr($sha, 0, 10);
-            $this->release['version_text'] = ''; // Feel free to change this
+            $this->release['version'] = $versionMatches['plainVersion'];
+            $this->release['revision'] = isset($versionMatches['hash']) ? substr($versionMatches['hash'], 0, 10) : '';
+            $this->release['version_text'] = $versionMatches['stability'] ?? '';
         } catch (\OutOfBoundsException $ex) {
             // Silent catch
             $this->release['version'] = 'unknown';
