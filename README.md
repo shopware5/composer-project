@@ -17,7 +17,7 @@ one created for you using an interactive installer.
 To use the installer, simply run: 
 
 ```bash
-$ ./app/install.sh
+$ ./app/bin/install.sh
 ```
 
 ## Configuration

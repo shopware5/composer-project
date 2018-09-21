@@ -9,7 +9,7 @@ engine/*
 /vendor/*
 
 # PHPUnit
-/tests
+/tests/shopware
 
 # Themes
 /themes/Backend/ExtJs
@@ -37,6 +37,7 @@ engine/*
 !/var/cache/.htaccess
 !/var/cache/clear_cache.sh
 /web/cache/*
+/web/sitemap/*
 
 # Log files
 /var/log/*

@@ -56,8 +56,16 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         ],
     ],
 
+    'web' => [
+        'webDir' => $projectDir . 'web',
+        'cacheDir' => $projectDir . 'web/cache',
+    ],
+
     'app' => [
         'rootDir' => $projectDir,
+        /**
+         * These parameters were necessary in Shopware 5.4.x and are replaced by the filesystem below in 5.5.x
+         */
         /**
          * Since Shopware 5.5 the configuration for 'downloadsDir' and 'documentsDir'
          * have become obsolete and are now handled by the defined filesystem adapters below.

@@ -10,12 +10,15 @@
         }
     ],
     "autoload": {
-        "classmap": [ "app/AppKernel.php" ]
+        "classmap": [
+            "app/AppKernel.php",
+            "app/ShopwareVersion.php"
+        ]
     },
     "require": {
         "php": "^7.0",
         "composer/installers": "^1.0",
-        "shopware/shopware": "^5.4",
+        "shopware/shopware": "^5.5",
         "ocramius/package-versions": "1.2.0",
         "vlucas/phpdotenv": "~2.0"
     },
@@ -35,13 +38,13 @@
     },
     "scripts": {
         "post-root-package-install": [
-           "./app/post-install.sh"
+           "./app/bin/post-install.sh"
         ],
         "post-install-cmd": [
-           "./app/post-install.sh"
+           "./app/bin/post-install.sh"
         ],
         "post-update-cmd":[
-           "./app/post-update.sh"
+           "./app/bin/post-update.sh"
         ]
     }
 }
