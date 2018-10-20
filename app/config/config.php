@@ -58,8 +58,29 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
 
     'app' => [
         'rootDir' => $projectDir,
+        /**
+         * Since Shopware 5.5 the configuration for 'downloadsDir' and 'documentsDir'
+         * have become obsolete and are now handled by the defined filesystem adapter.
+         */
         'downloadsDir' => $projectDir . 'files/downloads',
         'documentsDir' => $projectDir . 'files/documents',
+    ],
+    
+    /**
+     * PrefixFilesystem is available since Shopware 5.5 and allows plugins
+     * to use dedicated filesystems for public and private files.
+     */
+    'filesystem' => [
+        'private' => [
+            'config' => [
+                'root' => $projectDir . 'files' . DIRECTORY_SEPARATOR,
+            ],
+        ],
+        'public' => [
+            'config' => [
+                'root' => $projectDir . 'web' . DIRECTORY_SEPARATOR,
+            ],
+        ],
     ],
 
     'web' => [
