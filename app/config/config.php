@@ -1,15 +1,15 @@
 <?php
 
 $db = false;
-if (getenv('DATABASE_URL')) {
-    $db = parse_url(getenv('DATABASE_URL'));
-}
 
-// Fallback if e.g. the password contains URL invalid parameters
-if (!$db) {
+if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
+    $db = array_map('rawurldecode', $db);
+    $db['path'] = substr($db['path'], 1);
+} else {
+    // Fallback if e.g. the password contains URL invalid parameters
     $db['user'] = getenv('DB_USERNAME');
     $db['pass'] = getenv('DB_PASSWORD');
-    $db['path'] = '/' . getenv('DB_DATABASE');
+    $db['path'] = getenv('DB_DATABASE');
     $db['host'] = getenv('DB_HOST');
     $db['port'] = getenv('DB_PORT');
     $db['scheme'] = 'mysql';
@@ -22,7 +22,7 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
     'db' => [
         'username' => $db['user'],
         'password' => $db['pass'],
-        'dbname'   => substr($db['path'], 1),
+        'dbname'   => $db['path'],
         'host'     => $db['host'],
     ],
 
