@@ -60,59 +60,24 @@ class AppKernel extends Kernel
 
     private function loadRelease()
     {
-        $this->loadReleaseFromEnv();
-        $this->loadReleaseFromComposer();
-    }
-
-    /**
-     * Setting the environment variables, either directly, by the webserver or using the .env-file
-     * allows you to define a custom Shopware version IF NECESSARY.
-     *
-     * It should match the version being installed by composer. This way plugins still are able to check
-     * for the Shopware version.
-     *
-     * YOU SHOULDN'T NORMALLY HAVE TO DO THIS! (See below)
-     */
-    private function loadReleaseFromEnv()
-    {
-        $this->release['version'] = getenv('SHOPWARE_VERSION') === false ? self::VERSION : getenv('SHOPWARE_VERSION');
-        $this->release['revision'] = getenv('SHOPWARE_REVISION') === false ? self::REVISION : getenv('SHOPWARE_REVISION');
-        $this->release['version_text'] = getenv('SHOPWARE_VERSION_TEXT') === false ? self::VERSION_TEXT : getenv('SHOPWARE_VERSION_TEXT');
-    }
-
-    /**
-     * We try to determine the installed version of Shopware automatically.
-     */
-    private function loadReleaseFromComposer()
-    {
-        // If something was defined in the ENV, we respect that setting
-        if ($this->release['version'] !== self::VERSION) {
-            return;
-        }
-
         try {
-            list($version, $sha) = explode('@', \PackageVersions\Versions::getVersion('shopware/shopware'));
-
-            /*
-             * Trim leading v from versions like "v5.4.6"
-             */
-            $version = ltrim(strtolower($version), 'v');
-
-            /*
-             * Make sure the version matches some expected patterns like "5.4.0" or "5.0.0-RC1"
-             */
-            if (!preg_match('/^([\d]+\.[\d]+\.[\d]+(\-[a-zA-Z\d]{0,4})?)$/', $version)) {
-                throw new OutOfBoundsException(sprintf('Version "%s" not in expected format', $version));
-            }
-
-            $this->release['version'] = $version;
-            $this->release['revision'] = substr($sha, 0, 10);
-            $this->release['version_text'] = ''; // Feel free to change this
+            $release = ShopwareVersion::parseVersion(
+                \PackageVersions\Versions::getVersion('shopware/shopware')
+            );
         } catch (\OutOfBoundsException $ex) {
-            // Silent catch
-            $this->release['version'] = 'unknown';
-            $this->release['revision'] = 'unknown';
-            $this->release['version_text'] = '';
+            try {
+                $release = ShopwareVersion::parseVersion(
+                    sprintf('%s-%s@%s', getenv('SHOPWARE_VERSION'), getenv('SHOPWARE_REVISION'), getenv('SHOPWARE_VERSION_TEXT'))
+                );
+            } catch (\OutOfBoundsException $ex) {
+                $release = [
+                    'version' => '___VERSION___',
+                    'version_text' => '___VERSION_TEXT___',
+                    'revision' => '___REVISION___'
+                ];
+            }
         }
+
+        $this->release = $release;
     }
 }

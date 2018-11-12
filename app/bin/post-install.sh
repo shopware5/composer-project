@@ -2,6 +2,8 @@
 
 source $(dirname "$0")/functions.sh
 
+createSymLinks
+
 if envFileDoesNotExists
     then
         banner
