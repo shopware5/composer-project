@@ -7,7 +7,7 @@ createSymLinks
 if envFileDoesNotExists
     then
         banner
-        echo -e "\nPlease run app/install.sh manually to finish your installation\n"
+        echo -e "\nPlease run app/bin/install.sh manually to finish your installation\n"
     else
         ${__DIR__}/post-update.sh
         exit 0
