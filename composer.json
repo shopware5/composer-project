@@ -11,6 +11,7 @@
     ],
     "autoload": {
         "classmap": [
+            "app/Application.php",
             "app/AppKernel.php",
             "app/ShopwareVersion.php"
         ]

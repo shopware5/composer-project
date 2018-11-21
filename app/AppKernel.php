@@ -19,6 +19,12 @@ class AppKernel extends Kernel
         parent::__construct($environment, $debug);
     }
 
+    protected function initializeShopware()
+    {
+        $this->shopware = new Application($this->container);
+        $this->container->setApplication($this->shopware);
+    }
+
     /**
      * @return string
      */
