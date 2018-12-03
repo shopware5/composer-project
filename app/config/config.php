@@ -56,11 +56,6 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         ],
     ],
 
-    'web' => [
-        'webDir' => $projectDir . 'web',
-        'cacheDir' => $projectDir . 'web/cache',
-    ],
-
     'app' => [
         'rootDir' => $projectDir,
         /**
