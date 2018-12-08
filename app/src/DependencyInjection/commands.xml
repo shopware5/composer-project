@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="shopware.event_manager" alias="events" />
+        <service id="events" class="Shopware\Components\ContainerAwareEventManager">
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service class="Commands\PostInstall" id="commands.post_install">
+            <tag name="console.command" command="sw:build:post-install"/>
+            <argument type="string">%build.root_dir%</argument>
+        </service>
+        <service class="Commands\PostUpdate" id="commands.post_update">
+            <tag name="console.command" command="sw:build:post-update"/>
+            <argument type="string">%build.root_dir%</argument>
+        </service>
+        <service class="Commands\Install" id="commands.install">
+            <tag name="console.command" command="sw:build:install"/>
+            <argument type="string">%build.root_dir%</argument>
+        </service>
+    </services>
+
+</container>

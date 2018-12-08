@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+set_time_limit(0);
+
+require_once __DIR__ . '/../app/autoload.php';
+
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(['--env', '-e'], getenv('SHOPWARE_ENV') ?: 'dev');
+
+$kernel = new BuildKernel($env, true);
+$kernel->boot(getenv('SHOPWARE_ENV') === false);
+$application = new BuildApplication($kernel);
+$application->run($input);

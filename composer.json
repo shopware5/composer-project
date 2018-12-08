@@ -13,7 +13,10 @@
         "classmap": [
             "app/AppKernel.php",
             "app/ShopwareVersion.php"
-        ]
+        ],
+        "psr-4": {
+            "": "app/src/"
+        }
     },
     "require": {
         "php": "^7.0",
@@ -38,13 +41,13 @@
     },
     "scripts": {
         "post-root-package-install": [
-           "./app/bin/post-install.sh"
+           "@php bin/build sw:build:post-install"
         ],
         "post-install-cmd": [
-           "./app/bin/post-install.sh"
+           "@php bin/build sw:build:post-install"
         ],
         "post-update-cmd":[
-           "./app/bin/post-update.sh"
+           "@php bin/build sw:build:post-update"
         ]
     }
 }
