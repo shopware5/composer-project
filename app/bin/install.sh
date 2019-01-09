@@ -34,10 +34,10 @@ swCommand sw:plugin:deactivate SwagUpdate
 swCommand sw:admin:create --name="$ADMIN_NAME" --email="$ADMIN_EMAIL" --username="$ADMIN_USERNAME" --password="$ADMIN_PASSWORD" -n
 
 if [ $IMPORT_DEMODATA = y ]; then
-    INSTALL_IMAGES=$(promptYesOrNo "Do you want to install the images (~285MB) for the installed demo data? cURL is required. (Y/n) " 'y')
+    INSTALL_IMAGES=${INSTALL_IMAGES:-$(promptYesOrNo "Do you want to install the images (~285MB) for the installed demo data? cURL is required. (Y/n) " 'y')}
 
     if [ $INSTALL_IMAGES = y ]; then
-        `which curl` -L "http://releases.s3.shopware.com/test_images_since_5.1.zip" > images.zip && unzip images.zip && rm images.zip
+        `which curl` -L "http://releases.s3.shopware.com/test_images_since_5.1.zip" > images.zip && unzip images.zip -n && rm images.zip
     fi
 fi
 
