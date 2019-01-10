@@ -14,6 +14,8 @@ This will clone the repository with all necessary dependencies into a new direct
 You can then either provide a `.env` file for defining database credentials, the shop-url and Shopware version or have
 one created for you using an interactive installer. 
 
+If you already provide an `.env` and like to install the project fully automated you can use the `-n` or `--no-interaction` flags.
+
 To use the installer, simply run: 
 
 ```bash
@@ -67,3 +69,4 @@ are not being tracked by git.
 In case you need some project specific plugins that you don't want to add to your project via composer but track them using
 this repository, then you can add them to the `custom/project` directory. Only plugins using the new plugin style are
 supported.
+

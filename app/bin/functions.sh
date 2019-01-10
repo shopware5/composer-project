@@ -187,3 +187,12 @@ function createSymLinks(){
     ln -s ../../vendor/shopware/shopware/themes/Frontend/Responsive themes/Frontend/Responsive
 }
 
+function noInteraction(){
+    if [[ $@ == *'--no-interaction'* ]] || [[ $@ == *'-n'* ]]; then
+    DROP_DATABASE=${DROP_DATABASE:-$(promptYesOrNo "Start installation? This will drop the database ${warn}$DATABASE_URL${reset}! (y/N) " 'n')}
+    INSTALL_IMAGES=${INSTALL_IMAGES:-$(promptYesOrNo "Do you want to install the images (~285MB) for the installed demo data? cURL is required. (Y/n) " 'y')}
+else
+    DROP_DATABASE=$(promptYesOrNo "Start installation? This will drop the database ${warn}$DATABASE_URL${reset}! (y/N) " 'n')
+    INSTALL_IMAGES=$(promptYesOrNo "Do you want to install the images (~285MB) for the installed demo data? cURL is required. (Y/n) " 'y')
+fi
+}
