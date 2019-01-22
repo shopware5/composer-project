@@ -30,7 +30,11 @@ class AppKernel extends Kernel
      */
     protected function getConfigPath()
     {
-        return __DIR__ . '/config/config.php';
+        if (file_exists(__DIR__.'/config/config_'.$this->getEnvironment().'.php')) {
+            return __DIR__.'/config/config_'.$this->getEnvironment().'.php';
+        } else {
+            return __DIR__.'/config/config.php';
+        }
     }
 
     /**
