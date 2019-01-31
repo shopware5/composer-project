@@ -24,6 +24,7 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
         'password' => $db['pass'],
         'dbname'   => $db['path'],
         'host'     => $db['host'],
+        'port'     => $db['port'],
     ],
 
     'template' => [
