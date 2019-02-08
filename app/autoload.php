@@ -12,7 +12,7 @@ $loader = require __DIR__.'/../vendor/autoload.php';
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
 if (file_exists(__DIR__ . '/../.env')) {
-    $dotenv = new Dotenv(__DIR__ . '/../');
+    $dotenv = Dotenv::create(__DIR__ . '/../');
     $dotenv->load();
 }
 
