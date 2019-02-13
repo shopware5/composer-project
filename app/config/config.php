@@ -19,6 +19,7 @@ $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
 return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Default.php'), [
 
+    'trustedproxies' => explode(',', getenv('TRUSTEDPROXIES')),
     'db' => [
         'username' => $db['user'],
         'password' => $db['pass'],
