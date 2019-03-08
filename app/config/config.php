@@ -1,7 +1,5 @@
 <?php
 
-$db = false;
-
 if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
     $db = array_map('rawurldecode', $db);
     $db['path'] = substr($db['path'], 1);
@@ -9,13 +7,7 @@ if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
         $db['pass'] = '';
     }
 } else {
-    // Fallback if e.g. the password contains URL invalid parameters
-    $db['user'] = getenv('DB_USERNAME');
-    $db['pass'] = getenv('DB_PASSWORD');
-    $db['path'] = getenv('DB_DATABASE');
-    $db['host'] = getenv('DB_HOST');
-    $db['port'] = getenv('DB_PORT');
-    $db['scheme'] = 'mysql';
+    die('Critical environment variable \'DATABASE_URL\' missing!' . PHP_EOL);
 }
 
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
