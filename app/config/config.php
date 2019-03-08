@@ -5,7 +5,9 @@ $db = false;
 if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
     $db = array_map('rawurldecode', $db);
     $db['path'] = substr($db['path'], 1);
-    if (!isset($db['pass'])) $db['pass'] = '';
+    if (!isset($db['pass'])) {
+        $db['pass'] = '';
+    }
 } else {
     // Fallback if e.g. the password contains URL invalid parameters
     $db['user'] = getenv('DB_USERNAME');
