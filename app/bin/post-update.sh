@@ -11,6 +11,7 @@ echo "Updating Shopware install, please wait..."
 createSymLinks
 
 swCommand sw:migrations:migrate --mode=update
+swCommand sw:theme:synchronize
 swCommand sw:cache:clear
 swCommand sw:theme:cache:generate
 swCommand sw:plugin:refresh
