@@ -11,7 +11,7 @@ fi
 
 loadEnvFile
 
-DROP_DATABASE=$(promptYesOrNo "Start installation? This will drop the database ${warn}$DATABASE_URL${reset}! (y/N) " 'n')
+DROP_DATABASE=${DROP_DATABASE:-$(promptYesOrNo "Start installation? This will drop the database ${warn}$DATABASE_URL${reset}! (y/N) " 'n')}
 if [ $DROP_DATABASE = n ]; then
     echo -e "\nNot touching the database, have fun!\n"
     exit 0;
