@@ -9,6 +9,7 @@ use GuzzleHttp\Event\ProgressEvent;
 use League\Flysystem\Adapter\Local;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use ZipArchive;
@@ -51,6 +52,11 @@ ENV;
      */
     private $progress;
 
+    protected function configure()
+    {
+        $this->addOption('skip-images', null, InputOption::VALUE_NONE);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var Local $adapter */
@@ -71,7 +77,7 @@ ENV;
             (new Dotenv($adapter->applyPathPrefix('.')))->load();
         }
 
-        if (!$io->confirm(sprintf('Start installation? This will drop the database %s!', getenv('DATABASE_URL')), false)) {
+        if ($input->isInteractive() && !$io->confirm(sprintf('Start installation? This will drop the database %s!', getenv('DATABASE_URL')), false)) {
             $io->writeln('Not touching the database, have fun!');
 
             return 0;
@@ -101,7 +107,7 @@ ENV;
             getenv('ADMIN_PASSWORD')
         ), $output);
 
-        if (getenv('IMPORT_DEMODATA') === 'y' && $io->confirm('Do you want to install the images (~285MB) for the installed demo data? cURL is required.')) {
+        if (!$input->hasOption('skip-images') && getenv('IMPORT_DEMODATA') === 'y' && $io->confirm('Do you want to install the images (~285MB) for the installed demo data? cURL is required.')) {
             $client = new Client();
 
             $request = $client->createRequest('GET', 'http://releases.s3.shopware.com/test_images_since_5.1.zip', [
