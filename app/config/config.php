@@ -45,7 +45,7 @@ return array_replace_recursive($this->loadConfig($this->AppPath() . 'Configs/Def
     ],
 
     'cdn' => [
-        'liveMigration' => true,
+        'liveMigration' => false,
         'adapters' => [
             'local' => [
                 'path' => $projectDir,
