@@ -9,9 +9,11 @@ supported.
 composer create-project shopware/composer-project my_project_name --no-interaction --stability=dev
 ```
 
-This will clone the repository with all necessary dependencies into a new directory `my_project_name`.
+This will clone the repository with all necessary dependencies into a new directory `my_project_name`. You can then either
+remove the history of this project by deleting the `.git` directory and start from scratch by executing `git init .`, or
+keep the history and just add your own remote to push to. 
 
-You can then either provide a `.env` file for defining database credentials, the shop-url and Shopware version or have
+Afterwards you either provide a `.env` file for defining database credentials, the shop-url and Shopware version or have
 one created for you using an interactive installer. 
 
 To use the installer, simply run: 
