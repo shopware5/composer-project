@@ -21,31 +21,21 @@ class Install extends BuildCommand
 # Shop environment and database connection
 SHOPWARE_ENV="dev"
 
-# The URL has priority over the other values, so only one parameter needs to be set in production environments
+# Database credentials. Be sure to URL-encode any values containing special characters
+# Format: mysql://username:password@host:port/database
 DATABASE_URL="mysql://%3$s:%4$s@%1$s:%5$s/%2$s"
-
-# If e.g. the password contains special chars not allowed in a URL, you can define each parameter by itself instead
-DB_HOST="%1$s"
-DB_DATABASE="%2$s"
-DB_USERNAME="%3$s"
-DB_PASSWORD="%4$s"
-DB_PORT="%5$s"
-
-# Installation configuration (can be removed after installation)
-ADMIN_EMAIL="%6$s"
-ADMIN_NAME="%7$s"
-ADMIN_USERNAME="%8$s"
-ADMIN_PASSWORD="%9$s"
-SHOP_URL="%10$s"
-
-IMPORT_DEMODATA=%11$s
 
 ENV;
 
     /**
      * @var array
      */
-    private $env = [];
+    private $environmentSettings = [];
+
+    /**
+     * @var array
+     */
+    private $installationSettings = [];
 
     /**
      * @var ProgressBar
@@ -54,6 +44,14 @@ ENV;
 
     protected function configure()
     {
+        $this->addOption('admin-email', null, InputOption::VALUE_OPTIONAL);
+        $this->addOption('admin-name', null, InputOption::VALUE_OPTIONAL);
+        $this->addOption('admin-username', null, InputOption::VALUE_OPTIONAL);
+        $this->addOption('admin-password', null, InputOption::VALUE_OPTIONAL);
+
+        $this->addOption('shop-url', null, InputOption::VALUE_OPTIONAL);
+
+        $this->addOption('import-demodata', null, InputOption::VALUE_NONE);
         $this->addOption('skip-images', null, InputOption::VALUE_NONE);
     }
 
@@ -65,17 +63,16 @@ ENV;
 
         $this->showBanner($output);
 
-        if (!$this->envFileExists()) {
-            if (!$input->isInteractive()) {
-                $io->error('The .env file can only be generated in interactive mode.');
-                return 1;
-            }
+        if (!$this->envFileExists() && !$input->isInteractive()) {
+            $io->error('The .env file can only be generated in interactive mode.');
 
-            $io->title('Hi there! We need to configure your shop before proceeding any further, please complete the following fields.');
-            $this->createEnvFileInteractive($io);
-
-            (new Dotenv($adapter->applyPathPrefix('.')))->load();
+            return 1;
         }
+
+        $io->title('Hi there! We need to configure your shop before proceeding any further, please complete the following fields.');
+        $this->gatherSettings($io, $input);
+
+        (new Dotenv($adapter->applyPathPrefix('.')))->load();
 
         if ($input->isInteractive() && !$io->confirm(sprintf('Start installation? This will drop the database %s!', getenv('DATABASE_URL')), false)) {
             $io->writeln('Not touching the database, have fun!');
@@ -87,27 +84,30 @@ ENV;
 
         $this->executeCommand('sw:database:setup --steps=drop,create,import', $output);
 
-        if (getenv('IMPORT_DEMODATA') === 'y') {
+        if ($this->installationSettings['IMPORT_DEMODATA']) {
             $io->writeln('Importing demo data please wait...');
             $this->executeCommand('sw:database:setup --steps=importDemodata', $output);
         }
 
         $this->createSymlinks();
 
-        $this->executeCommand(sprintf('sw:database:setup --steps=setupShop --shop-url="%s"', getenv('SHOP_URL')), $output);
+        $this->executeCommand(sprintf('sw:database:setup --steps=setupShop --shop-url="%s"', $this->installationSettings['SHOP_URL']), $output);
         $this->executeCommand('sw:snippets:to:db --include-plugins', $output);
         $this->executeCommand('sw:theme:initialize', $output);
         $this->executeCommand('sw:firstrunwizard:disable', $output);
         $this->executeCommand('sw:plugin:deactivate SwagUpdate', $output);
         $this->executeCommand(sprintf(
             'sw:admin:create --name="%s" --email="%s" --username="%s" --password="%s"',
-            getenv('ADMIN_NAME'),
-            getenv('ADMIN_EMAIL'),
-            getenv('ADMIN_USERNAME'),
-            getenv('ADMIN_PASSWORD')
+            $this->installationSettings['ADMIN_NAME'],
+            $this->installationSettings['ADMIN_EMAIL'],
+            $this->installationSettings['ADMIN_USERNAME'],
+            $this->installationSettings['ADMIN_PASSWORD']
         ), $output);
 
-        if (!$input->hasOption('skip-images') && getenv('IMPORT_DEMODATA') === 'y' && $io->confirm('Do you want to install the images (~285MB) for the installed demo data? cURL is required.')) {
+        if (!$input->getOption('skip-images') &&
+            $this->installationSettings['IMPORT_DEMODATA'] &&
+            $io->confirm('Do you want to install the images (~285MB) for the installed demo data? cURL is required.')) {
+
             $client = new Client();
 
             $request = $client->createRequest('GET', 'http://releases.s3.shopware.com/test_images_since_5.1.zip', [
@@ -122,7 +122,7 @@ ENV;
                 }
             });
 
-            $request->getEmitter()->on('end', function (EndEvent $event) use ($io) {
+            $request->getEmitter()->on('end', function () use ($io) {
                 if ($this->progress instanceof ProgressBar) {
                     $this->progress->finish();
                     $io->newLine();
@@ -144,55 +144,77 @@ ENV;
         return 0;
     }
 
-    protected function createEnvFileInteractive(SymfonyStyle $io)
+    protected function gatherSettings(SymfonyStyle $io, InputInterface $input)
     {
         $correct = false;
 
         while ($correct !== true) {
-            $this->createEnvFile($io);
+            if (!$this->envFileExists()) {
+                $this->gatherEnvironmentSettings($io);
+            }
 
-            $io->title('The following settings have been written to the .env file:');
+            $this->gatherInstallationSettings($io, $input);
 
-            $tmpEnv = [];
-            foreach ($this->env as $key => $value) {
-                $tmpEnv[] = [
+            if (!$this->envFileExists()) {
+                $tmpSettings = [];
+                foreach ($this->environmentSettings as $key => $value) {
+                    $tmpSettings[] = [
+                        $key,
+                        $value,
+                    ];
+                }
+                $io->title('The following settings will be written to the .env file:');
+                $io->table([], $tmpSettings);
+            }
+
+            $tmpSettings = [];
+            foreach ($this->installationSettings as $key => $value) {
+                $tmpSettings[] = [
                     $key,
-                    $value,
+                    is_bool($value) ? $value ? 'yes' : 'no' : $value,
                 ];
             }
-            $io->table([], $tmpEnv);
+            $io->title('The following settings will be used for the installation:');
+            $io->table([], $tmpSettings);
 
             $correct = $io->confirm('Is this information correct?');
         }
 
-        $this->storeEnv();
+        if (!$this->envFileExists()) {
+            $this->storeEnv();
+        }
     }
 
-    protected function createEnvFile(SymfonyStyle $io)
+    protected function gatherEnvironmentSettings(SymfonyStyle $io)
     {
-        $this->env = [];
+        $this->environmentSettings = [];
 
         $io->section('Database settings');
-        $this->env = array_merge($this->env, [
+        $this->environmentSettings = array_merge($this->environmentSettings, [
             'DB_HOST' => $io->ask('Enter your database host', '127.0.0.1'),
             'DB_DATABASE' => $io->ask('Enter your database name', 'swcomposer'),
             'DB_USERNAME' => $io->ask('Enter your database username', 'shopware'),
             'DB_PASSWORD' => $io->ask('Enter your database password', 'shopware'),
             'DB_PORT' => (int) $io->ask('Enter your database port number', 3306),
         ]);
+    }
+
+    protected function gatherInstallationSettings(SymfonyStyle $io, InputInterface $input)
+    {
+        $this->installationSettings = [];
 
         $io->section('Admin settings');
-        $this->env = array_merge($this->env, [
-            'ADMIN_USERNAME' => $io->ask('Admin username', 'demo'),
-            'ADMIN_PASSWORD' => $io->ask('Admin password', 'demo'),
-            'ADMIN_NAME' => $io->ask('Admin name', 'John Doe'),
-            'ADMIN_EMAIL' => $io->ask('Admin email', 'demo@demo.com'),
+        $this->installationSettings = array_merge($this->installationSettings, [
+            'ADMIN_USERNAME' => $input->getOption('admin-username') ?? $io->ask('Admin username', 'demo'),
+            'ADMIN_PASSWORD' => $input->getOption('admin-password') ?? $io->ask('Admin password', 'demo'),
+            'ADMIN_NAME' => $input->getOption('admin-name') ?? $io->ask('Admin name', 'John Doe'),
+            'ADMIN_EMAIL' => $input->getOption('admin-email') ?? $io->ask('Admin email', 'demo@demo.com'),
         ]);
 
         $io->section('Shop settings');
-        $this->env = array_merge($this->env, [
-            'SHOP_URL' => $io->ask('Enter your shop URL incl. protocol and path', 'http://shopware.example/path'),
-            'IMPORT_DEMODATA' => (bool) $io->confirm('Would you like to install demo data?') ? 'y' : 'n',
+        $this->installationSettings = array_merge($this->installationSettings, [
+            'SHOP_URL' => $input->getOption('shop-url') ?? $io->ask('Enter your shop URL incl. protocol and path', 'http://shopware.example/path'),
+            'IMPORT_DEMODATA' => $input->getOption('import-demodata') ?: $io->confirm('Would you like to install demo data?', false),
         ]);
     }
 
@@ -200,17 +222,11 @@ ENV;
     {
         $env = sprintf(
             self::ENV,
-            $this->env['DB_HOST'],
-            $this->env['DB_DATABASE'],
-            $this->env['DB_USERNAME'],
-            $this->env['DB_PASSWORD'],
-            $this->env['DB_PORT'],
-            $this->env['ADMIN_EMAIL'],
-            $this->env['ADMIN_NAME'],
-            $this->env['ADMIN_USERNAME'],
-            $this->env['ADMIN_PASSWORD'],
-            $this->env['SHOP_URL'],
-            $this->env['IMPORT_DEMODATA']
+            $this->environmentSettings['DB_HOST'],
+            $this->environmentSettings['DB_DATABASE'],
+            $this->environmentSettings['DB_USERNAME'],
+            $this->environmentSettings['DB_PASSWORD'],
+            $this->environmentSettings['DB_PORT']
         );
 
         $this->filesystem->write('.env', $env);

@@ -20,6 +20,7 @@
     },
     "require": {
         "php": "^7.0",
+        "ext-zip": "*",
         "composer/installers": "^1.0",
         "shopware/shopware": "^5.5",
         "ocramius/package-versions": "1.2.0",
