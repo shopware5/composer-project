@@ -5,17 +5,5 @@
 
     <!-- Add some generic project services here -->
     <services>
-        <service id="monolog.handler.rotating_file" class="Monolog\Handler\RotatingFileHandler" public="false">
-            <argument>%kernel.logs_dir%/core_%kernel.environment%.log</argument>
-            <argument>14</argument>
-            <call method="pushProcessor">
-                <argument type="service" id="monolog.processor.uid" />
-            </call>
-        </service>
-
-        <service id="myproject" decorates="monolog.handler.main" class="Monolog\Handler\StreamHandler">
-            <argument type="string">php://stderr</argument>
-        </service>
-
     </services>
 </container>
