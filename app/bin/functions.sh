@@ -177,6 +177,7 @@ function createSymLinks(){
     ln -s ../../vendor/shopware/shopware/engine/Library/ExtJs engine/Library/ExtJs
     ln -s ../../vendor/shopware/shopware/engine/Library/TinyMce engine/Library/TinyMce
 
+    rm -rf themes/{package.json,Gruntfile.js,grunt-tasks}
     rm -rf themes/Frontend/{Bare,Responsive}
     rm -rf themes/Backend/ExtJs
 
@@ -185,5 +186,8 @@ function createSymLinks(){
     ln -s ../../vendor/shopware/shopware/themes/Backend/ExtJs themes/Backend/ExtJs
     ln -s ../../vendor/shopware/shopware/themes/Frontend/Bare themes/Frontend/Bare
     ln -s ../../vendor/shopware/shopware/themes/Frontend/Responsive themes/Frontend/Responsive
+    ln -s ../../vendor/shopware/shopware/themes/package.json themes/package.json
+    ln -s ../../vendor/shopware/shopware/themes/Gruntfile.js themes/Gruntfile.js
+    ln -s ../../vendor/shopware/shopware/themes/grunt-tasks themes/grunt-tasks
 }
 
