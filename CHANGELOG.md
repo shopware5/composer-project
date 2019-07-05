@@ -10,3 +10,7 @@
 
 * Removed individual database environment variables `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` and `DB_PORT` in favor of the general `DATABASE_URL`.
 If your password contains any special characters, be sure to URL-encode them for the URL.
+
+#### 2019-07-02
+
+* Added removal of unused files after installation
