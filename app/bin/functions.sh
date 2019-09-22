@@ -173,7 +173,6 @@ function createSymLinks(){
     cd $__DIR__/../..
     rm -rf  engine/Library
     mkdir -p engine/Library
-    ln -s ../../vendor/shopware/shopware/engine/Library/CodeMirror engine/Library/CodeMirror
     ln -s ../../vendor/shopware/shopware/engine/Library/ExtJs engine/Library/ExtJs
     ln -s ../../vendor/shopware/shopware/engine/Library/TinyMce engine/Library/TinyMce
 
