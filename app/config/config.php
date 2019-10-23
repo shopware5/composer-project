@@ -124,7 +124,7 @@ if (($modelCacheHandler = getenv('MODEL_CACHE_HANDLER')) && ($modelCacheHost = p
 // Zend Cache
 // ZEND_CACHE_HANDLER - redis
 // ZEND_CACHE_HOST_0 - tcp://127.0.0.1:6379/1
-if ($httpCacheHandler = getenv('ZEND_CACHE_HANDLER')) {
+if ($zendCacheHandler = getenv('ZEND_CACHE_HANDLER')) {
     $zendCacheHosts = [];
     while (($zendCacheHost = getenv('ZEND_CACHE_HOST_' . count($zendCacheHosts))) && $zendCacheHost = parse_url($zendCacheHost)) {
         $zendCacheHosts[] = [
@@ -134,7 +134,7 @@ if ($httpCacheHandler = getenv('ZEND_CACHE_HANDLER')) {
         ];
     }
     $composerConfig['cache'] = [
-        'backend'        => $httpCacheHandler, // e.G auto, apcu, xcache
+        'backend'        => $zendCacheHandler, // e.G auto, apcu, xcache
         'backendOptions' => [
             'servers' => $zendCacheHosts,
         ],
