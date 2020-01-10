@@ -39,9 +39,6 @@
         "sort-packages": true
     },
     "scripts": {
-        "post-root-package-install": [
-           "./app/bin/post-install.sh"
-        ],
         "post-install-cmd": [
            "./app/bin/post-install.sh"
         ],

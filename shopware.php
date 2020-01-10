@@ -4,9 +4,7 @@ use Shopware\Components\HttpCache\AppCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\TerminableInterface;
 
-/**
- * @var Composer\Autoload\ClassLoader
- */
+/** @var Composer\Autoload\ClassLoader */
 $loader = require __DIR__.'/app/autoload.php';
 
 $environment = getenv('SHOPWARE_ENV');
