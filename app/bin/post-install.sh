@@ -2,7 +2,7 @@
 
 source $(dirname "$0")/functions.sh
 
-createSymLinks
+createSymLinks || true
 
 set -eu
 
