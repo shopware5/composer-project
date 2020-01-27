@@ -25,9 +25,9 @@
     },
     "extra": {
         "installer-paths": {
-            "Plugins/Community/Backend/": ["type:shopware-backend-plugin"],
-            "Plugins/Community/Core/": ["type:shopware-core-plugin"],
-            "Plugins/Community/Frontend/": ["type:shopware-frontend-plugin"]
+            "Plugins/Local/Backend/{$name}/": ["type:shopware-backend-plugin"],
+            "Plugins/Local/Core/{$name}/": ["type:shopware-core-plugin"],
+            "Plugins/Local/Frontend/{$name}/": ["type:shopware-frontend-plugin"]
         }
     },
     "include-path": [
