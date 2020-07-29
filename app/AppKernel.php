@@ -73,7 +73,7 @@ class AppKernel extends Kernel
         } catch (\OutOfBoundsException $ex) {
             try {
                 $release = ShopwareVersion::parseVersion(
-                    sprintf('%s-%s@%s', getenv('SHOPWARE_VERSION'), getenv('SHOPWARE_REVISION'), getenv('SHOPWARE_VERSION_TEXT'))
+                    sprintf('%s-%s@%s', $_SERVER['SHOPWARE_VERSION'], $_SERVER['SHOPWARE_REVISION'], $_SERVER['SHOPWARE_VERSION_TEXT'])
                 );
             } catch (\OutOfBoundsException $ex) {
                 $release = [

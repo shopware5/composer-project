@@ -1,6 +1,6 @@
 <?php
 
-if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
+if (isset($_SERVER['DATABASE_URL']) && $db = parse_url($_SERVER['DATABASE_URL'])) {
     $db = array_map('rawurldecode', $db);
     $db['path'] = substr($db['path'], 1);
     if (!isset($db['pass'])) {
@@ -13,7 +13,7 @@ if (getenv('DATABASE_URL') && $db = parse_url(getenv('DATABASE_URL'))) {
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
 $composerConfig = [
-    'trustedproxies' => explode(',', getenv('TRUSTEDPROXIES')),
+    'trustedproxies' => explode(',', $_SERVER['TRUSTEDPROXIES'] ?? []),
     'db'             => [
         'username' => $db['user'],
         'password' => $db['pass'],
@@ -93,7 +93,7 @@ $composerConfig = [
 // Session
 // SESSION_HANDLER - redis
 // SESSION_PATH - tcp://127.0.0.1:6379
-if (($sessionHandler = getenv('SESSION_HANDLER')) && ($sessionPath = getenv('SESSION_PATH'))) {
+if (($sessionHandler = $_SERVER['SESSION_HANDLER']) && ($sessionPath = $_SERVER['SESSION_PATH'])) {
     $composerConfig['session'] = [
         'save_handler' => $sessionHandler,
         'save_path'    => $sessionPath,
@@ -103,7 +103,7 @@ if (($sessionHandler = getenv('SESSION_HANDLER')) && ($sessionPath = getenv('SES
 // Backend Session
 // BACKEND_SESSION_HANDLER - redis
 // BACKEND_SESSION_PATH - tcp://127.0.0.1:6379
-if (($backendSessionHandler = getenv('BACKEND_SESSION_HANDLER')) && ($backendSessionPath = getenv('BACKEND_SESSION_PATH'))) {
+if (($backendSessionHandler = $_SERVER['BACKEND_SESSION_HANDLER']) && ($backendSessionPath = $_SERVER['BACKEND_SESSION_PATH'])) {
     $composerConfig['backendsession'] = [
         'save_handler' => $sessionHandler,
         'save_path'    => $sessionPath,
@@ -113,7 +113,7 @@ if (($backendSessionHandler = getenv('BACKEND_SESSION_HANDLER')) && ($backendSes
 // Model Cache
 // MODEL_CACHE_HANDLER - redis
 // MODEL_CACHE_HOST - tcp://127.0.0.1:6379/1
-if (($modelCacheHandler = getenv('MODEL_CACHE_HANDLER')) && ($modelCacheHost = parse_url(getenv('MODEL_CACHE_HOST')))) {
+if (($modelCacheHandler = $_SERVER['MODEL_CACHE_HANDLER']) && ($modelCacheHost = parse_url($_SERVER['MODEL_CACHE_HOST']))) {
     $composerConfig['model'] = [
         'redisHost'     => $modelCacheHost['host'],
         'redisPort'     => $modelCacheHost['port'],
@@ -124,9 +124,9 @@ if (($modelCacheHandler = getenv('MODEL_CACHE_HANDLER')) && ($modelCacheHost = p
 // Zend Cache
 // ZEND_CACHE_HANDLER - redis
 // ZEND_CACHE_HOST_0 - tcp://127.0.0.1:6379/1
-if ($zendCacheHandler = getenv('ZEND_CACHE_HANDLER')) {
+if ($zendCacheHandler = $_SERVER['ZEND_CACHE_HANDLER']) {
     $zendCacheHosts = [];
-    while (($zendCacheHost = getenv('ZEND_CACHE_HOST_' . count($zendCacheHosts))) && $zendCacheHost = parse_url($zendCacheHost)) {
+    while (($zendCacheHost = $_SERVER['ZEND_CACHE_HOST_' . count($zendCacheHosts)]) && $zendCacheHost = parse_url($zendCacheHost)) {
         $zendCacheHosts[] = [
             'host'    => $zendCacheHost['host'],
             'port'    => $zendCacheHost['port'],
@@ -151,27 +151,27 @@ if ($zendCacheHandler = getenv('ZEND_CACHE_HANDLER')) {
 // ES_HOSTS - "localhost:9200"
 // ES_BACKEND_ENABLED - false
 // ES_BACKEND_BACKLOG - false
-if ($esEnabled = getenv('ES_ENABLED')) {
+if ($esEnabled = $_SERVER['ES_ENABLED']) {
     $composerConfig['es'] = [
         'enabled'                 => ((bool)$esEnabled),
-        'prefix'                  => ($esPrefix = getenv('ES_PREFIX')) === false ? 'sw_dev' : $esPrefix,
-        'number_of_replicas'      => ($esPrefix = getenv('ES_REPLICAS')) === false ? null : $esPrefix,
-        'number_of_shards'        => ($esShards = getenv('ES_SHARDS')) === false ? null : $esShards,
-        'version'                 => ($esVersion = getenv('ES_VERSION')) === false ? '' : $esVersion,
-        'dynamic_mapping_enabled' => ($esDynamicMapping = getenv('ES_DYNAMIC_MAPPING_ENABLED')) === false ? null : $esDynamicMapping,
+        'prefix'                  => ($esPrefix = $_SERVER['ES_PREFIX']) === false ? 'sw_dev' : $esPrefix,
+        'number_of_replicas'      => ($esPrefix = $_SERVER['ES_REPLICAS']) === false ? null : $esPrefix,
+        'number_of_shards'        => ($esShards = $_SERVER['ES_SHARDS']) === false ? null : $esShards,
+        'version'                 => ($esVersion = $_SERVER['ES_VERSION']) === false ? '' : $esVersion,
+        'dynamic_mapping_enabled' => ($esDynamicMapping = $_SERVER['ES_DYNAMIC_MAPPING_ENABLED']) === false ? null : $esDynamicMapping,
         'client'                  => [
-            'hosts' => ($esHosts = getenv('ES_HOSTS')) === false ? [] : explode(',', $esHosts)
+            'hosts' => ($esHosts = $_SERVER['ES_HOSTS']) === false ? [] : explode(',', $esHosts)
         ],
         'backend'                 => [
-            'write_backlog' => (bool)getenv('ES_BACKEND_ENABLED'),
-            'enabled'       => (bool)getenv('ES_BACKEND_BACKLOG'),
+            'write_backlog' => (bool)$_SERVER['ES_BACKEND_ENABLED'],
+            'enabled'       => (bool)$_SERVER['ES_BACKEND_BACKLOG'],
         ],
     ];
 }
 
 // Custom Config
 // CUSTOM_CONFIG_FILE - config.php
-if (($customConfigFile = getenv('CUSTOM_CONFIG_FILE')) && ($customConfigFile = ($projectDir . DIRECTORY_SEPARATOR . $customConfigFile)) && file_exists($customConfigFile)) {
+if (($customConfigFile = $_SERVER['CUSTOM_CONFIG_FILE']) && ($customConfigFile = ($projectDir . DIRECTORY_SEPARATOR . $customConfigFile)) && file_exists($customConfigFile)) {
     $customConfig = include $customConfigFile;
 
     $composerConfig = array_merge_recursive($composerConfig, $customConfig[0] ?? []);
