@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+if [[ -z $PHP_BINARY ]]; then
+    export PHP_BINARY="$(which php)"
+fi
+
 set -o nounset
 set -o errexit
 set -o pipefail
@@ -59,7 +64,7 @@ function promptYesOrNo(){
 }
 
 function swCommand(){
-    ${__DIR__}/../../bin/console "$@"
+    ${PHP_BINARY} ${__DIR__}/../../bin/console "$@"
 }
 
 function banner(){

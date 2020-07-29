@@ -13,7 +13,7 @@ if (isset($_SERVER['DATABASE_URL']) && $db = parse_url($_SERVER['DATABASE_URL'])
 $projectDir = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 
 $composerConfig = [
-    'trustedproxies' => explode(',', $_SERVER['TRUSTEDPROXIES'] ?? []),
+    'trustedproxies' => explode(',', $_SERVER['TRUSTEDPROXIES'] ?? ''),
     'db'             => [
         'username' => $db['user'],
         'password' => $db['pass'],
