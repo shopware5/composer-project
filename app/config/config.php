@@ -93,7 +93,7 @@ $composerConfig = [
 // Session
 // SESSION_HANDLER - redis
 // SESSION_PATH - tcp://127.0.0.1:6379
-if (($sessionHandler = $_SERVER['SESSION_HANDLER']) && ($sessionPath = $_SERVER['SESSION_PATH'])) {
+if (($sessionHandler = $_SERVER['SESSION_HANDLER'] ?? null) && ($sessionPath = $_SERVER['SESSION_PATH'] ?? null)) {
     $composerConfig['session'] = [
         'save_handler' => $sessionHandler,
         'save_path'    => $sessionPath,
@@ -103,7 +103,7 @@ if (($sessionHandler = $_SERVER['SESSION_HANDLER']) && ($sessionPath = $_SERVER[
 // Backend Session
 // BACKEND_SESSION_HANDLER - redis
 // BACKEND_SESSION_PATH - tcp://127.0.0.1:6379
-if (($backendSessionHandler = $_SERVER['BACKEND_SESSION_HANDLER']) && ($backendSessionPath = $_SERVER['BACKEND_SESSION_PATH'])) {
+if (($backendSessionHandler = $_SERVER['BACKEND_SESSION_HANDLER'] ?? null) && ($backendSessionPath = $_SERVER['BACKEND_SESSION_PATH'] ?? null)) {
     $composerConfig['backendsession'] = [
         'save_handler' => $sessionHandler,
         'save_path'    => $sessionPath,
@@ -113,7 +113,7 @@ if (($backendSessionHandler = $_SERVER['BACKEND_SESSION_HANDLER']) && ($backendS
 // Model Cache
 // MODEL_CACHE_HANDLER - redis
 // MODEL_CACHE_HOST - tcp://127.0.0.1:6379/1
-if (($modelCacheHandler = $_SERVER['MODEL_CACHE_HANDLER']) && ($modelCacheHost = parse_url($_SERVER['MODEL_CACHE_HOST']))) {
+if (($modelCacheHandler = $_SERVER['MODEL_CACHE_HANDLER'] ?? null) && ($modelCacheHost = parse_url($_SERVER['MODEL_CACHE_HOST'] ?? null))) {
     $composerConfig['model'] = [
         'redisHost'     => $modelCacheHost['host'],
         'redisPort'     => $modelCacheHost['port'],
@@ -124,9 +124,9 @@ if (($modelCacheHandler = $_SERVER['MODEL_CACHE_HANDLER']) && ($modelCacheHost =
 // Zend Cache
 // ZEND_CACHE_HANDLER - redis
 // ZEND_CACHE_HOST_0 - tcp://127.0.0.1:6379/1
-if ($zendCacheHandler = $_SERVER['ZEND_CACHE_HANDLER']) {
+if ($zendCacheHandler = $_SERVER['ZEND_CACHE_HANDLER'] ?? null) {
     $zendCacheHosts = [];
-    while (($zendCacheHost = $_SERVER['ZEND_CACHE_HOST_' . count($zendCacheHosts)]) && $zendCacheHost = parse_url($zendCacheHost)) {
+    while (($zendCacheHost = $_SERVER['ZEND_CACHE_HOST_' . count($zendCacheHosts)] ?? null) && $zendCacheHost = parse_url($zendCacheHost)) {
         $zendCacheHosts[] = [
             'host'    => $zendCacheHost['host'],
             'port'    => $zendCacheHost['port'],
@@ -151,27 +151,27 @@ if ($zendCacheHandler = $_SERVER['ZEND_CACHE_HANDLER']) {
 // ES_HOSTS - "localhost:9200"
 // ES_BACKEND_ENABLED - false
 // ES_BACKEND_BACKLOG - false
-if ($esEnabled = $_SERVER['ES_ENABLED']) {
+if ($esEnabled = $_SERVER['ES_ENABLED'] ?? null) {
     $composerConfig['es'] = [
         'enabled'                 => ((bool)$esEnabled),
-        'prefix'                  => ($esPrefix = $_SERVER['ES_PREFIX']) === false ? 'sw_dev' : $esPrefix,
-        'number_of_replicas'      => ($esPrefix = $_SERVER['ES_REPLICAS']) === false ? null : $esPrefix,
-        'number_of_shards'        => ($esShards = $_SERVER['ES_SHARDS']) === false ? null : $esShards,
-        'version'                 => ($esVersion = $_SERVER['ES_VERSION']) === false ? '' : $esVersion,
-        'dynamic_mapping_enabled' => ($esDynamicMapping = $_SERVER['ES_DYNAMIC_MAPPING_ENABLED']) === false ? null : $esDynamicMapping,
+        'prefix'                  => ($esPrefix = $_SERVER['ES_PREFIX'] ?? false) === false ? 'sw_dev' : $esPrefix,
+        'number_of_replicas'      => ($esPrefix = $_SERVER['ES_REPLICAS'] ?? false) === false ? null : $esPrefix,
+        'number_of_shards'        => ($esShards = $_SERVER['ES_SHARDS'] ?? false) === false ? null : $esShards,
+        'version'                 => ($esVersion = $_SERVER['ES_VERSION'] ?? false) === false ? '' : $esVersion,
+        'dynamic_mapping_enabled' => ($esDynamicMapping = $_SERVER['ES_DYNAMIC_MAPPING_ENABLED'] ?? false) === false ? null : $esDynamicMapping,
         'client'                  => [
-            'hosts' => ($esHosts = $_SERVER['ES_HOSTS']) === false ? [] : explode(',', $esHosts)
+            'hosts' => ($esHosts = $_SERVER['ES_HOSTS'] ?? false) === false ? [] : explode(',', $esHosts)
         ],
         'backend'                 => [
-            'write_backlog' => (bool)$_SERVER['ES_BACKEND_ENABLED'],
-            'enabled'       => (bool)$_SERVER['ES_BACKEND_BACKLOG'],
+            'write_backlog' => (bool)$_SERVER['ES_BACKEND_ENABLED'] ?? false,
+            'enabled'       => (bool)$_SERVER['ES_BACKEND_BACKLOG'] ?? false,
         ],
     ];
 }
 
 // Custom Config
 // CUSTOM_CONFIG_FILE - config.php
-if (($customConfigFile = $_SERVER['CUSTOM_CONFIG_FILE']) && ($customConfigFile = ($projectDir . DIRECTORY_SEPARATOR . $customConfigFile)) && file_exists($customConfigFile)) {
+if (($customConfigFile = $_SERVER['CUSTOM_CONFIG_FILE'] ?? null) && ($customConfigFile = ($projectDir . DIRECTORY_SEPARATOR . $customConfigFile)) && file_exists($customConfigFile)) {
     $customConfig = include $customConfigFile;
 
     $composerConfig = array_merge_recursive($composerConfig, $customConfig[0] ?? []);
