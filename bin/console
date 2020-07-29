@@ -9,7 +9,7 @@ use Shopware\Components\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
 $input = new ArgvInput();
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SHOPWARE_ENV'));
+$env = $input->getParameterOption(array('--env', '-e'), $_SERVER['SHOPWARE_ENV'] ?? 'production');
 
 $kernel = new AppKernel($env, false);
 $application = new Application($kernel);

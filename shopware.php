@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\TerminableInterface;
 /** @var Composer\Autoload\ClassLoader */
 $loader = require __DIR__.'/app/autoload.php';
 
-$environment = getenv('SHOPWARE_ENV');
+$environment = $_SERVER['SHOPWARE_ENV'] ?? 'production';
 $kernel = new AppKernel($environment, $environment !== 'production');
 if ($kernel->isHttpCacheEnabled()) {
     $kernel = new AppCache($kernel, $kernel->getHttpCacheConfig());
