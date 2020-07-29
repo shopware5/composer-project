@@ -17,10 +17,11 @@
         ]
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "composer/installers": "^1.0",
-        "shopware/shopware": "^5.6",
+        "shopware/shopware": "5.7.x-dev",
         "composer/package-versions-deprecated": "^1.8",
+        "composer-runtime-api": "^2.0.0",
         "vlucas/phpdotenv": "^3.1"
     },
     "extra": {
