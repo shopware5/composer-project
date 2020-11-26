@@ -6,6 +6,12 @@ if (isset($_SERVER['DATABASE_URL']) && $db = parse_url($_SERVER['DATABASE_URL'])
     if (!isset($db['pass'])) {
         $db['pass'] = '';
     }
+} else if (isset($_ENV['DB_USERNAME']) && isset($_ENV['DB_PASSWORD']) && isset($_ENV['DB_DATABASE']) && isset($_ENV['DB_HOST']) && isset($_ENV['DB_PORT'])) {
+    $db['user'] = $_ENV['DB_USERNAME'];
+    $db['pass'] = $_ENV['DB_PASSWORD'];
+    $db['path'] = $_ENV['DB_DATABASE'];
+    $db['host'] = $_ENV['DB_HOST'];
+    $db['port'] = $_ENV['DB_PORT'];
 } else {
     die('Critical environment variable \'DATABASE_URL\' missing!' . PHP_EOL);
 }
