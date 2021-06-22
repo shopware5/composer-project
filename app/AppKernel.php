@@ -62,7 +62,7 @@ class AppKernel extends Kernel
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__));
         $loader->load('services.xml');
 
-        return parent::prepareContainer($container);
+        parent::prepareContainer($container);
     }
 
     private function loadRelease()
