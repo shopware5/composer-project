@@ -2,7 +2,6 @@
 
 use Shopware\Components\HttpCache\AppCache;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\TerminableInterface;
 
 /** @var Composer\Autoload\ClassLoader */
 $loader = require __DIR__.'/app/autoload.php';
@@ -17,6 +16,4 @@ $request = Request::createFromGlobals();
 
 $response = $kernel->handle($request);
 $response->send();
-if ($kernel instanceof TerminableInterface) {
-    $kernel->terminate($request, $response);
-}
+$kernel->terminate($request, $response);
