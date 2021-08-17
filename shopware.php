@@ -17,6 +17,4 @@ $request = Request::createFromGlobals();
 
 $response = $kernel->handle($request);
 $response->send();
-if ($kernel instanceof TerminableInterface) {
-    $kernel->terminate($request, $response);
-}
+$kernel->terminate($request, $response);
