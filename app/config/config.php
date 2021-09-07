@@ -105,8 +105,8 @@ if (($sessionHandler = $_SERVER['SESSION_HANDLER'] ?? null) && ($sessionPath = $
 // BACKEND_SESSION_PATH - tcp://127.0.0.1:6379
 if (($backendSessionHandler = $_SERVER['BACKEND_SESSION_HANDLER'] ?? null) && ($backendSessionPath = $_SERVER['BACKEND_SESSION_PATH'] ?? null)) {
     $composerConfig['backendsession'] = [
-        'save_handler' => $sessionHandler,
-        'save_path'    => $sessionPath,
+        'save_handler' => $backendSessionHandler,
+        'save_path'    => $backendSessionPath,
     ];
 }
 
