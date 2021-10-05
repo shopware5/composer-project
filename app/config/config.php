@@ -19,7 +19,7 @@ $composerConfig = [
         'password' => $db['pass'],
         'dbname'   => $db['path'],
         'host'     => $db['host'],
-        'port'     => $db['port'],
+        'port'     => $db['port'] ?? null,
     ],
 
     'template' => [
