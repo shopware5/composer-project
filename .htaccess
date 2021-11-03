@@ -96,6 +96,13 @@ DirectoryIndex shopware.php
     </IfModule>
 </FilesMatch>
 
+# Specify CSP header for SVG files - https://docs.shopware.com/en/shopware-5-en/securityupdates/security-update-10-2021
+<IfModule mod_headers.c>
+    <FilesMatch "\.(?i:svg)$">
+        Header set Content-Security-Policy "script-src 'none'"
+    </FilesMatch>
+</IfModule>
+
 # Disables auto directory index
 <IfModule mod_autoindex.c>
     Options -Indexes
