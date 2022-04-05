@@ -1,0 +1,86 @@
+name: test-installation-process
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '5.*'
+env:
+  DB_USER: shopware
+  DB_PASSWORD: shopware
+  DB_HOST: mysql
+  DB_PORT: 3306
+  DB_NAME: shopware
+  SW_HOST: localhost
+  SW_BASE_PATH: ''
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.4' ]
+    container:
+      image: gitlab.shopware.com:5005/shopware/5/product/image/continuous:${{ matrix.php }}
+      credentials:
+        username: ${{ secrets.GITLAB_CI_REGISTRY_IMAGE_USERNAME }}
+        password: ${{ secrets.GITLAB_CI_REGISTRY_IMAGE_PASSWORD }}
+    services:
+      mysql:
+        image: mariadb:10.6
+        env:
+          MYSQL_USER: '${{ env.DB_USER }}'
+          MYSQL_PASSWORD: '${{ env.DB_PASSWORD }}'
+          MYSQL_DATABASE: '${{ env.DB_NAME }}'
+          MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        options: '--mount="type=tmpfs,destination=/var/lib/mysql"'
+    steps:
+      - name: Wait until the database is ready
+        uses: 'docker://busybox:latest'
+        with:
+          entrypoint: 'sh'
+          args: >
+            -c "
+              while !(nc -z ${{ env.DB_HOST }} ${{ env.DB_PORT }})
+              do
+                echo -n '.'
+                sleep 1
+              done;
+              echo 'database ready!'
+            "
+
+      - uses: actions/cache@v3
+        with:
+          path: '/root/.composer/cache/files'
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Composer install
+        run: composer --no-interaction install
+
+      - name: Generate .env
+        run: |
+          cat <<EOF > .env
+          DATABASE_URL="mysql://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@${{ env.DB_HOST }}:${{ env.DB_PORT }}/${{ env.DB_NAME }}"
+          ADMIN_EMAIL="admin@example.com"
+          ADMIN_NAME="Demo Admin"
+          ADMIN_USERNAME="demo"
+          ADMIN_PASSWORD="demo"
+          SHOP_URL="http://${{ env.SW_HOST }}${{ env.SW_BASE_PATH }}"
+          IMPORT_DEMODATA=n
+          INSTALL_IMAGES=n
+          EOF
+
+      - name: Install
+        run: echo 'y' | ./app/bin/install.sh
+
+      - name: Run webserver
+        run: |
+          sed -i -e "s;__ROOT__;$(pwd);g" /etc/nginx/sites-enabled/shopware.conf
+          chown -R www-data:www-data $(pwd)
+          /usr/bin/supervisord -c /etc/supervisord.conf &>/dev/null &
+
+      - name: Check whether installation is reachable
+        run: curl --verbose -f "http://${{ env.SW_HOST }}${{ env.SW_BASE_PATH }}"
