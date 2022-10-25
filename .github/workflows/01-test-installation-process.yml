@@ -1,13 +1,14 @@
-name: test-installation-process
+name: Basic Test
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches:
       - '5.*'
 env:
   DB_USER: shopware
   DB_PASSWORD: shopware
-  DB_HOST: mysql
+  DB_HOST: 127.0.0.1
   DB_PORT: 3306
   DB_NAME: shopware
   SW_HOST: localhost
@@ -17,12 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '7.4', '8.0', '8.1', '8.2.0RC4' ]
-    container:
-      image: gitlab.shopware.com:5005/shopware/5/product/image/continuous:${{ matrix.php }}
-      credentials:
-        username: ${{ secrets.GITLAB_CI_REGISTRY_IMAGE_USERNAME }}
-        password: ${{ secrets.GITLAB_CI_REGISTRY_IMAGE_PASSWORD }}
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
     services:
       mysql:
         image: mariadb:10.6
@@ -31,22 +27,10 @@ jobs:
           MYSQL_PASSWORD: '${{ env.DB_PASSWORD }}'
           MYSQL_DATABASE: '${{ env.DB_NAME }}'
           MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-        options: '--mount="type=tmpfs,destination=/var/lib/mysql"'
+        options: '--mount="type=tmpfs,destination=/var/lib/mysql" --health-cmd="mysqladmin ping -h 127.0.0.1" --health-interval=5s --health-timeout=2s --health-retries=3'
+        ports:
+          - "3306:3306"
     steps:
-      - name: Wait until the database is ready
-        uses: 'docker://busybox:latest'
-        with:
-          entrypoint: 'sh'
-          args: >
-            -c "
-              while !(nc -z ${{ env.DB_HOST }} ${{ env.DB_PORT }})
-              do
-                echo -n '.'
-                sleep 1
-              done;
-              echo 'database ready!'
-            "
-
       - uses: actions/cache@v3
         with:
           path: '/root/.composer/cache/files'
@@ -56,6 +40,15 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v3
+        
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          
+      - name: Configure for PHP 8.2
+        run: composer config platform.php 8.1.99
+        if: matrix.php == '8.2'
 
       - name: Composer install
         run: composer --no-interaction install
@@ -76,11 +69,11 @@ jobs:
       - name: Install
         run: echo 'y' | ./app/bin/install.sh
 
-      - name: Run webserver
-        run: |
-          sed -i -e "s;__ROOT__;$(pwd);g" /etc/nginx/sites-enabled/shopware.conf
-          chown -R www-data:www-data $(pwd)
-          /usr/bin/supervisord -c /etc/supervisord.conf &>/dev/null &
-
-      - name: Check whether installation is reachable
-        run: curl --verbose -f "http://${{ env.SW_HOST }}${{ env.SW_BASE_PATH }}"
+      - name: Test listing plugins
+        run: php bin/console sw:plugin:list
+        
+      - name: Test dump theme config
+        run: php bin/console sw:theme:dump:configuration
+        
+      - name: Test theme compile
+        run: php bin/console sw:theme:cache:generate
