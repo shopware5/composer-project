@@ -1,6 +1,5 @@
 <?php
 
-use Composer\InstalledVersions;
 use Shopware\Kernel;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -68,14 +67,14 @@ class AppKernel extends Kernel
     private function loadRelease()
     {
         try {
-            $release = ShopwareVersion::parseVersion(
-                InstalledVersions::getPrettyVersion('shopware/shopware')
-            );
+            $release = ShopwareVersion::parseVersion();
         } catch (\OutOfBoundsException $ex) {
             try {
-                $release = ShopwareVersion::parseVersion(
-                    sprintf('%s-%s@%s', $_SERVER['SHOPWARE_VERSION'], $_SERVER['SHOPWARE_REVISION'], $_SERVER['SHOPWARE_VERSION_TEXT'])
-                );
+                $release = [
+                    'version' => $_SERVER['SHOPWARE_VERSION'],
+                    'version_text' => $_SERVER['SHOPWARE_VERSION_TEXT'],
+                    'revision' => $_SERVER['SHOPWARE_REVISION']
+                ];
             } catch (\OutOfBoundsException $ex) {
                 $release = [
                     'version' => '___VERSION___',
