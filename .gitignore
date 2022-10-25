@@ -15,6 +15,9 @@ engine/*
 /themes/Backend/ExtJs
 /themes/Frontend/Bare
 /themes/Frontend/Responsive
+/themes/grunt-tasks
+/themes/Gruntfile.js
+/themes/package.json
 
 # User installed plugins
 /Plugins/Community/Backend/*
