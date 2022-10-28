@@ -64,24 +64,16 @@ class AppKernel extends Kernel
         parent::prepareContainer($container);
     }
 
-    private function loadRelease()
+    private function loadRelease(): void
     {
         try {
             $release = ShopwareVersion::parseVersion();
         } catch (\OutOfBoundsException $ex) {
-            try {
-                $release = [
-                    'version' => $_SERVER['SHOPWARE_VERSION'],
-                    'version_text' => $_SERVER['SHOPWARE_VERSION_TEXT'],
-                    'revision' => $_SERVER['SHOPWARE_REVISION']
-                ];
-            } catch (\OutOfBoundsException $ex) {
-                $release = [
-                    'version' => '___VERSION___',
-                    'version_text' => '___VERSION_TEXT___',
-                    'revision' => '___REVISION___'
-                ];
-            }
+            $release = [
+                'version' => $_SERVER['SHOPWARE_VERSION'] ?? '___VERSION___',
+                'version_text' => $_SERVER['SHOPWARE_VERSION_TEXT'] ?? '___VERSION_TEXT___',
+                'revision' => $_SERVER['SHOPWARE_REVISION'] ?? '___REVISION___',
+            ];
         }
 
         $this->release = $release;
