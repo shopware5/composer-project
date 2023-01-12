@@ -46,6 +46,10 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Configure for PHP 8.2
+        run: composer require shopware/shopware 5.7.x-dev
+        if: matrix.php == '8.2'
+
       - name: Composer install
         run: composer --no-interaction install
 
